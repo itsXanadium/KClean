@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('no_kk')->nullable();
             $table->string('no_telp')->nullable();
             $table->decimal('points', 10,2)->default(0);
-            $table->enum('role',['user', 'superadmin', 'petugas', 'umkm'])->default('user');
+            $table->string('role')->default('user');
             $table->uuid('profile_qr')->unique();
             $table->rememberToken();
             $table->timestamps();
