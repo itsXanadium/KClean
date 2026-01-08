@@ -23,21 +23,13 @@ class userrole
         // $allowed = collect($role)
         // ->map(fn($role) => userrole::from($role) )
         // ->contain($user->role);
-
-        // if(!Auth::user()->role !== $role){
-        //     abort(403, 'Unauthorized Access!');
-        // }
-        // // $user = auth()->user();
-        // return $next($request);
-        // // After Login route is created, this will be used
-        // // return redirect()
-        // // ->to(route('login'));
+        
     if(Auth::user()->role !== 'user'){
+        Auth::logout();
         abort(403, 'Unauthorized Access!');
         // return redirect()
         // ->to(route('login'));
     }
-        Auth::logout();
         return $next($request);
     }
 }
