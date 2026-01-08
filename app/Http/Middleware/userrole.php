@@ -25,7 +25,7 @@ class userrole
         // ->contain($user->role);
         
     if(Auth::user()->role !== 'user'){
-        Auth::logout();
+        // Auth::logout();
         abort(403, 'Unauthorized Access!');
         // return redirect()
         // ->to(route('login'));
