@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('no_telp')->nullable();
             $table->decimal('points', 10,2)->default(0);
             $table->string('role')->default('user');
-            $table->uuid('profile_qr')->unique();
+            $table->uuid('profile_qr')->unique()->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
