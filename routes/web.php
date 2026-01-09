@@ -10,6 +10,7 @@ Route::get('/api', function(){
     echo ("API IS running" );
 });
 
+
 // //Example Routing No 1 Role Based
 // Route::middleware(['auth', 'role:super_admin'])->group(function(){
 //       Route::get('/superadmin', function(){
