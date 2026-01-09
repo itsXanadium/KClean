@@ -56,7 +56,7 @@ class AuthController extends Controller
         ]);
         if(!Auth::attempt($credentials)){
             throw ValidationException::withMessages([
-                'email'=>['Invalid Credentials!'],
+              ['Invalid Credentials!'],
             ]);
         }
         $user = $request->user();
