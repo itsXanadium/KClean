@@ -14,7 +14,6 @@ class EmailController extends Controller
     public function Verify(Request $request, $id, $hash):JsonResponse
     {
         $user = User::find($id);
-
         if(!hash_equals(sha1($user->getEmailForVerification()), $hash)){
             abort(403, 'Invalid Link');
         }
