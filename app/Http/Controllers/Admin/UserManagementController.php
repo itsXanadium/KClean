@@ -36,8 +36,8 @@ class UserManagementController extends Controller
             'password' => Hash::make($validated['password']),
             'profile_qr' => $uuid,
         ]);
-
-        //Store qr
+        $user->sendEmailVerificationNotification();
+        //Store qr  
         $qrPath = "qrcodes/users/{$uuid}.svg";
         Storage::disk('public')->put(
             $qrPath,
