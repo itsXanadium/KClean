@@ -31,6 +31,7 @@ class AuthController extends Controller
             'profile_qr' => $uuid,
         ]);
         $user->assignRole('user');
+        $user->sendEmailVerificationNotification();
         $qrPath = "qrcodes/users/{$uuid}.svg";
         Storage::disk('public')->put(
             $qrPath,
@@ -45,10 +46,10 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'User registered!',
             'user'=> $user,
+            'Token Type' => 'Bearer',
             'token'=> $token,
         ], 201);
     }
-
     public function login(Request $request){
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -64,8 +65,6 @@ class AuthController extends Controller
         return response()->json([
             'token' => $token,
             'user'=>[
-                
-                // 'id'=> $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'roles' => $user->getRoleNames(),
@@ -78,9 +77,8 @@ class AuthController extends Controller
 
     public function logout(Request $request){
         $request->user()->currentAccessToken()->delete;
-
         return response()->json([
-            '{+}'=> "Logged Out",
-        ]);
+            '{+}' => 'User Logged Out!'
+        ],200);
     }
 }
