@@ -37,8 +37,7 @@ Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])
 Route::middleware(['auth:sanctum', 'permission:update own profile'])
    ->put('/update', [ProfileController::class, 'Update']);
 
-
-
+Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
 //Admin Route
 Route::middleware(['auth:sanctum', 'permission:manage users'])
    ->post('/createuser/{role}', [UserManagementController::class, 'CreateUser']);

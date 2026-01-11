@@ -37,7 +37,9 @@ class AuthController extends Controller
             $qrPath,
             QrCode::format('svg')
             ->size(200)
-            ->generate("USER:{$uuid}")
+            ->generate(
+                url("/api/profile/{$uuid}")
+                )
         );
         $user->update([
             'qr_code_path'=>$qrPath

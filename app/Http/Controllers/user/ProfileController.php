@@ -26,4 +26,12 @@ class ProfileController extends Controller
             'User'=> $user
         ]);
     }
+
+    public function UserProfileQRScan($uuid){
+        $user = User::where('profile_qr', $uuid)->firstOrFail();
+        return response()->json([
+            'name'=>$user->name,
+            'email'=> $user->email,
+        ]);
+    }
 }
