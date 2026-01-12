@@ -84,7 +84,6 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'roles' => $user->getRoleNames(),
                 'profile_qr'=>$user->profile_qr,
-                'trash_transaction_qr'=>$user->trash_transaction_qr,
                 'points'=>$user->points,
                 'permissions' => $user->getAllPermissions()->pluck('name'),
             ]

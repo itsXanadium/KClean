@@ -42,5 +42,7 @@ Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
 Route::middleware(['auth:sanctum', 'permission:manage users'])
    ->post('/createuser/{role}', [UserManagementController::class, 'CreateUser']);
 
+Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
+   ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
 
 
