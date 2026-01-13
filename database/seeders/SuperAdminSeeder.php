@@ -35,7 +35,7 @@ class SuperAdminSeeder extends Seeder
             ->generate("/api/profile/{$uuid}")
         );
         $admin->update([
-            'profile_qr'=>$qrPath
+            'profile_qr_path'=>$qrPath
         ]);
     }
 }

@@ -37,6 +37,10 @@ class User extends Authenticatable implements MustVerifyEmail
         // 'otp_verified_at'
     ];
 
+    public function voucher(){
+        return $this->hasMany(Voucher::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

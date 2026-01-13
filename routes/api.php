@@ -45,8 +45,5 @@ Route::middleware(['auth:sanctum', 'permission:manage users'])
 
 Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
    ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
-
-
-//Petugas Route
-Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
-   ->post('/trash_transaction/{uuid}', [TrashTransactionController::class,'TrashTransaction']);
+   
+   
