@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('vouchers', function (Blueprint $table) {
-            $table->id();
+            $table->id();   
             $table->string('title');
             $table->decimal('points_required',10,2);
             $table->enum('category', ['makanan', 'minuman']);
             $table->string('voucher_image')->nullable();
             $table->timestamp('expires_at')->nullable();
-            $table->foreignId('umkm_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('umkm_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

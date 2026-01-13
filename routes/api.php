@@ -1,9 +1,10 @@
-
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\Auth\EmailController;
 use App\Http\Controllers\user\ProfileController;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -45,4 +46,9 @@ Route::middleware(['auth:sanctum', 'permission:manage users'])
 Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
    ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
 
-
+// UMKM Route
+Route::get('/voucher', [VoucherController::class, 'index']);
+Route::post('/voucher', [VoucherController::class, 'store']);
+Route::get('/voucher/{id}', [VoucherController::class, 'show']);
+Route::put('/voucher/{id}', [VoucherController::class, 'update']);
+Route::delete('/voucher/{id}', [VoucherController::class, 'destroy']);
