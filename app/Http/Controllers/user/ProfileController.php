@@ -37,7 +37,8 @@ class ProfileController extends Controller
             'email'=> $user->email,
         ]);
     }
-    public function GenerateTrashTransactionQR(User $user){
+    public function GenerateTrashTransactionQR(Request $request){
+        $user =$request->user();
         $uuid = Str::uuid()->toString();
         // $qr= User::create([
         //     'trash_transaction_qr'=>$uuid
@@ -53,7 +54,7 @@ class ProfileController extends Controller
         );
         $user->update([
             'trash_transaction_qr'=>$uuid,
-            'trash_transaction_qr_path'=>$Trash_transaction_qrPath,
+            'transaction_qr_path'=>$Trash_transaction_qrPath
         ]);
         return response()->json([
             '{+}'=> 'Trash Transaction QR Generated!',

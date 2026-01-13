@@ -30,7 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_qr',
         'profile_qr_path',
         'trash_transaction_qr',
-        'trash_transaction_qr_path',
+        'transaction_qr_path',
         'no_telp',
         // 'otp',
         // 'otp_expires_at',
