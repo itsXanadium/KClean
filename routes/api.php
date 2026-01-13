@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Auth\EmailController;
+use App\Http\Controllers\TrashTransactionController;
 use App\Http\Controllers\user\ProfileController;
 use Illuminate\Auth\Notifications\VerifyEmail;
 
@@ -46,3 +47,6 @@ Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
    ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
 
 
+//Petugas Route
+Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
+   ->post('/trash_transaction/{uuid}', [TrashTransactionController::class,'TrashTransaction']);
