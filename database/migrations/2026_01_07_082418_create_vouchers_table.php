@@ -17,7 +17,8 @@ return new class extends Migration
             $table->decimal('points_required',10,2);
             $table->enum('category', ['makanan', 'minuman']);
             $table->string('voucher_image')->nullable();
-            $table->timestamp('expires_at')->nullable();
+            $table->dateTime('actives_at')->nullable();
+            $table->dateTime('expires_at')->nullable();
             $table->foreignId('umkm_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
