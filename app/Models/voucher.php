@@ -14,7 +14,8 @@ class Voucher extends Model
         'points_required',
         'category',
         'voucher_image',
-        'expires_at',
+        'actives_at',
+        'expired_at',
         'umkm_id',
     ];
 

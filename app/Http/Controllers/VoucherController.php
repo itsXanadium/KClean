@@ -27,7 +27,8 @@ use  AuthorizesRequests;
             'points_required' => 'required',
             'category' => 'required',
             'voucher_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'expires_at' => 'required|sometimes',
+            'actives_at'=>'required',
+            'expired_at' => 'required',
             'umkm_id' => 'sometimes',
         ]);
 
@@ -42,7 +43,8 @@ use  AuthorizesRequests;
             'points_required' => $request->points_required,
             'category' => $request->category,
             'voucher_image' => $image->hashName(),
-            'expires_at' => $request->expires_at,
+            'actives_at'=>$request->actives_at,
+            'expired_at' => $request->expired_at,
             'umkm_id' => $request->umkm_id,
         ]);
 
