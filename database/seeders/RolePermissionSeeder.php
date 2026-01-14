@@ -43,6 +43,10 @@ class RolePermissionSeeder extends Seeder
             'view total voucher used',
             'view weekly voucher redeemed',
             'view voucher totals',
+            'view all voucher',
+            'view by id',
+            'delete voucher',
+            'update voucher',
 
             //SuperAdmin
             'manage users',
@@ -85,6 +89,10 @@ class RolePermissionSeeder extends Seeder
             'view total voucher used',
             'view weekly voucher redeemed',
             'view voucher totals',
+            'view all voucher',
+            'view by id',
+            'update voucher',
+            'delete voucher'
         ]);
     }
 }

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Voucher; 
+use App\Models\Voucher;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class VoucherController extends Controller{
+use  AuthorizesRequests;
     public function index(){
+        $this->authorize('view all voucher');
         $voucher = Voucher::all();
 
         return response()->json([
@@ -18,19 +21,21 @@ class VoucherController extends Controller{
     
     public function store(Request $request){
         //validate form
+        $this->authorize('create voucher');
         $request->validate([
             'title' => 'required',
             'points_required' => 'required',
             'category' => 'required',
             'voucher_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'expires_at' => 'required|sometimes',
-            'umkm_id' => 'required',
+            'umkm_id' => 'sometimes',
         ]);
 
         //upload image
+        // $image = $request->file('voucher_image');
+        // $image->storeAs('voucher', $image->hashName());
         $image = $request->file('voucher_image');
-        $image->storeAs('voucher', $image->hashName());
-
+        $image->storeAs('voucher', $image->hashName(), 'public');
         //create voucher
         $voucher = Voucher::create([
             'title' => $request->title,
@@ -55,8 +60,8 @@ class VoucherController extends Controller{
     }
 
     public function show($id){
+        $this->authorize('view by id');
         $voucher = Voucher::findOrFail($id);
-
         if($voucher){
             return response()->json([
                 'message' => 'Voucher berhasil ditemukan!',
@@ -71,6 +76,7 @@ class VoucherController extends Controller{
     }
 
     public function update(Request $request, $id){
+        $this->authorize('update voucher');
         $validated=$request->validate([
             'title' => 'required|sometimes',
             'points_required' => 'required|sometimes',
@@ -92,6 +98,7 @@ class VoucherController extends Controller{
 
     public function destroy($id){
         //get voucher by ID
+        $this->authorize('delete voucher');
         $voucher = Voucher::findOrFail($id);
 
         //delete image

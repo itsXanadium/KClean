@@ -2,12 +2,13 @@
 <?php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Auth\EmailController;
-use App\Http\Controllers\TrashTransactionController;
-use App\Http\Controllers\user\ProfileController;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Http\Controllers\user\ProfileController;
+use App\Http\Controllers\TrashTransactionController;
+use App\Http\Controllers\Admin\UserManagementController;
 
 // Route::prefix('auth')->group(function(){
 //     Route::post('/login', [AuthController::class, 'login']);
@@ -47,3 +48,19 @@ Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
    ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
    
    
+//Petugas Route
+Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
+   ->post('/trash_transaction/{uuid} ', [TrashTransactionController::class,'TrashTransaction']);
+
+// UMKM Route
+Route::middleware(['auth:sanctum', 'permission:view all voucher'])
+   ->get('/voucher', [VoucherController::class, 'index']);
+Route::middleware(['auth:sanctum', 'permission:create voucher'])
+   ->post('/voucher', [VoucherController::class, 'store']);
+Route::middleware(['auth:sanctum', 'permission:view by id'])
+   ->get('/voucher/{id}', [VoucherController::class, 'show']);
+Route::middleware(['auth:sanctum', 'permission:update voucher'])
+   ->put('/voucher/{id}', [VoucherController::class, 'update']);
+Route::middleware(['auth:sanctum', 'permission:delete voucher'])
+   ->delete('/voucher/{id}', [VoucherController::class, 'destroy']);
+
