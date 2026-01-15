@@ -6,6 +6,8 @@ use App\Models\Voucher;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class VoucherController extends Controller{
 use  AuthorizesRequests;
@@ -29,7 +31,7 @@ use  AuthorizesRequests;
             'voucher_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'actives_at'=>'required',
             'expired_at' => 'required',
-            'umkm_id' => 'sometimes',
+            'status' => 'required',
         ]);
 
         //upload image
@@ -45,7 +47,8 @@ use  AuthorizesRequests;
             'voucher_image' => $image->hashName(),
             'actives_at'=>$request->actives_at,
             'expired_at' => $request->expired_at,
-            'umkm_id' => $request->umkm_id,
+            'umkm_id' => Auth::user()->id,
+            'status' => $request->status,
         ]);
 
         if($voucher){
@@ -75,6 +78,33 @@ use  AuthorizesRequests;
                 'message' => 'Voucher tidak ditemukan!'
             ], 404);
         }
+    }
+
+    public function showActiveVoucher(){
+        $this->authorize('view active voucher');
+        $voucher = Voucher::where('status', 'active')->get()->count();
+
+        return response()->json([
+            'message' =>'Voucher data',
+            'data'    => $voucher
+        ], 200);
+    }
+
+    public function showExpiredVoucher(){
+        $this->authorize('view expired voucher');
+
+        
+        $voucher = Voucher::where('status', 'expired')->get()->count();
+
+        return response()->json([
+            'message' =>'Voucher data',
+            'data'    => $voucher
+        ], 200);
+    }
+
+    public function showTotalVoucherUsed(){
+        $this->authorize('view total voucher used');
+
     }
 
     public function update(Request $request, $id){

@@ -17,7 +17,14 @@ class Voucher extends Model
         'actives_at',
         'expired_at',
         'umkm_id',
+        'status',
     ];
+
+    public function casts(){
+        return[
+            'expired_at' =>'datetime'
+        ];
+    }
 
     public function user()
     {
