@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\trash_transaction;
 use App\Models\User;
+use Illuminate\Container\Attributes\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Str;
 
 class TrashTransactionController extends Controller
@@ -21,25 +23,31 @@ class TrashTransactionController extends Controller
         ]);
     }
 
-    public function TrashTransaction(Request $request, $uuid){
+    public function TrashTransaction(Request $request){
         $this->authorize('create trash transactions');
-        $user = User::where('trash_transaction_qr', $uuid)->firstOrFail();
-        $uuid = Str::uuid()->toString();
         $validated = $request->validate([
-            'trash_type' => 'sometimes',
-            'trash_weight' => 'sometimes',
+            'trash_type' => 'required',
+            'trash_weight' => 'required',
+            'trash_transaction_qr'=>'required'
     ]);
-    $trash_transaction = trash_transaction::create([
-        'trash_transaction_id' => $uuid,
-        'trash_type' => $validated['trash_type'],
-        'trash_weight'=> $validated['trash_weight'],
-        'points' => $validated['trash_weight' * 10],
-        'user_id'=> $user->uuid,
-        'petugas_id' => Auth::user()->id,
-    ]);
+        // $uuid = Str::uuid()->toString();
+        $user = User::where('trash_transaction_qr', $validated['trash_transaction_qr'])->firstOrFail();
+        $points = round($validated['trash_weight']*0.2,2);
+        $trashtransaction = FacadesDB::transaction(function() use($points, $user, $validated){
+            $transaction = trash_transaction::create([
+            'trash_transaction_id' => (string)Str::uuid(),
+            'trash_type' => $validated['trash_type'],
+            'trash_weight'=> $validated['trash_weight'],
+            'points' => $points,
+            'user_id'=> $user->id,
+            'petugas_id' => Auth::user()->id,
+        ]);
+        $user->increment('points', $points);
+        return $transaction;
+        });
     return response()->json([
         '{+}' => 'Transaction Success',
-        'Data' => $trash_transaction
+        'Data' => $trashtransaction
     ]);
     }
 }

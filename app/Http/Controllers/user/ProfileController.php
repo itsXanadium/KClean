@@ -27,7 +27,7 @@ class ProfileController extends Controller
         return response()->json([
             '{+}'=>'user updated',
             'User'=> $user
-        ]);
+        ]); 
     }
 
     public function UserProfileQRScan($uuid){

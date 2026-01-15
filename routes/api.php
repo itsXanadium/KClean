@@ -50,7 +50,7 @@ Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
    
 //Petugas Route
 Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
-   ->post('/trash_transaction/{uuid} ', [TrashTransactionController::class,'TrashTransaction']);
+   ->post('/trash_transaction', [TrashTransactionController::class,'TrashTransaction']);
 
 // UMKM Route
 Route::middleware(['auth:sanctum', 'permission:view all voucher'])
