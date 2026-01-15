@@ -19,4 +19,7 @@ class trash_transaction extends Model
         'user_id',
         'petugas_id'
     ]; 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
