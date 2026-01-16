@@ -59,9 +59,9 @@ Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
 Route::middleware(['auth:sanctum', 'permission:view all voucher'])
    ->get('/voucher', [VoucherController::class, 'index']);
 Route::middleware(['auth:sanctum', 'permission:view active voucher'])
-   ->get('/active_voucher', [VoucherController::class, 'showActiveVoucher']);
+   ->get('/active-voucher', [VoucherController::class, 'showActiveVoucher']);
 Route::middleware(['auth:sanctum', 'permission:view expired voucher'])
-   ->get('/expired_voucher', [VoucherController::class, 'showExpiredVoucher']);
+   ->get('/expired-voucher', [VoucherController::class, 'showExpiredVoucher']);
 Route::middleware(['auth:sanctum', 'permission:create voucher'])
    ->post('/voucher', [VoucherController::class, 'store']);
 Route::middleware(['auth:sanctum', 'permission:view by id'])

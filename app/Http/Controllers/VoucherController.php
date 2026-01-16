@@ -31,7 +31,6 @@ use  AuthorizesRequests;
             'voucher_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'actives_at'=>'required',
             'expired_at' => 'required',
-            'status' => 'required',
         ]);
 
         //upload image
@@ -48,7 +47,6 @@ use  AuthorizesRequests;
             'actives_at'=>$request->actives_at,
             'expired_at' => $request->expired_at,
             'umkm_id' => Auth::user()->id,
-            'status' => $request->status,
         ]);
 
         if($voucher){
@@ -85,7 +83,7 @@ use  AuthorizesRequests;
         $voucher = Voucher::where('status', 'active')->get()->count();
 
         return response()->json([
-            'message' =>'Voucher data',
+            'message' =>'Active voucher data',
             'data'    => $voucher
         ], 200);
     }
@@ -111,12 +109,10 @@ use  AuthorizesRequests;
 
     public function showExpiredVoucher(){
         $this->authorize('view expired voucher');
-        expiredVoucher();
-
         $voucher = Voucher::where('status', 'expired')->get()->count();
 
         return response()->json([
-            'message' =>'Voucher data',
+            'message' =>'Expired voucher data',
             'data'    => $voucher
         ], 200);
     }

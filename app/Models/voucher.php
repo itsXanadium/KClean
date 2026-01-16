@@ -20,12 +20,6 @@ class Voucher extends Model
         'status',
     ];
 
-    public function casts(){
-        return[
-            'expired_at' =>'datetime'
-        ];
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class);
