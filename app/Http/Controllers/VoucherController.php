@@ -90,10 +90,29 @@ use  AuthorizesRequests;
         ], 200);
     }
 
+    // public function expiredVoucher(){
+    //     $now = Carbon::now();
+    //     $expiredVouchers = Voucher::where('status', 'active')
+    //         ->where('expired_at', '<', $now)
+    //         ->get();
+        
+    //     $updatedCount = 0;
+    //     foreach($expiredVouchers as $voucher){
+    //         $voucher->update(['status' => 'expired']);
+    //         $updatedCount++;
+    //     }
+        
+    //     return response()->json([
+    //         'message' => 'Voucher expiration check completed',
+    //         'updated_count' => $updatedCount,
+    //         'data' => $expiredVouchers
+    //     ], 200);
+    // }
+
     public function showExpiredVoucher(){
         $this->authorize('view expired voucher');
+        expiredVoucher();
 
-        
         $voucher = Voucher::where('status', 'expired')->get()->count();
 
         return response()->json([
