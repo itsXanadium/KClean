@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('voucher:update-expired')
-    ->hourly();
+    ->daily();
 
 Schedule::command('user_voucher:update-expired')
-    ->hourly()
-    ->withoutOverlapping();
+    ->daily();
+    
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
