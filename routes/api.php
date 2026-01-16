@@ -9,6 +9,7 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\TrashTransactionController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\UserVoucherController;
 
 // Route::prefix('auth')->group(function(){
 //     Route::post('/login', [AuthController::class, 'login']);
@@ -43,14 +44,16 @@ Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
 //Admin Route
 Route::middleware(['auth:sanctum', 'permission:manage users'])
    ->post('/createuser/{role}', [UserManagementController::class, 'CreateUser']);
-
+// Genereate Trash QR
 Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
    ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
-   
+// Buying Voucher
+Route::middleware(['auth:sanctum', 'permission:buy voucher'])
+   ->post('/voucher-purchase', [UserVoucherController::class, 'BuyVoucher']);
    
 //Petugas Route
 Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
-   ->post('/trash_transaction', [TrashTransactionController::class,'TrashTransaction']);
+   ->post('/trash-transaction', [TrashTransactionController::class,'TrashTransaction']);
 
 // UMKM Route
 Route::middleware(['auth:sanctum', 'permission:view all voucher'])
