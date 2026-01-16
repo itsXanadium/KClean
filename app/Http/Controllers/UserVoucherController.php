@@ -19,8 +19,8 @@ class UserVoucherController extends Controller
         $validated = $request->validate([
             'voucher_id' => 'required|exists:vouchers,id',
         ]);
-        $voucher = Voucher::findOrFail($validated['voucher_id']);
-        $purchase = DB::transaction(function()use($voucher){
+        $purchase = DB::transaction(function()use($validated){
+            $voucher = Voucher::lockForUpdate()->findOrFail($validated['voucher_id']);
             $uuid = Str::uuid()->toString();
             $user= User::lockForUpdate()->findOrFail(Auth::id());
                 if($user->points < $voucher->points_required){
@@ -30,7 +30,8 @@ class UserVoucherController extends Controller
                 return user_voucher::create([
                     'user_id' => $user->id,
                     'voucher_id'=>$voucher->id,
-                    'expired_at' => $voucher->expires_at  ?? now()->addDays(7),
+                    'active_at' => now(),
+                    'expired_at' => $voucher->expired_at,
                     'status' => 'active',
                     'voucher_qr' => $uuid
                 ]);
