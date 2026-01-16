@@ -41,4 +41,18 @@ class UserVoucherController extends Controller
                 'Voucher Data' => $purchase
             ],200);
     }
+
+    public function FetchActiveVoucher(){
+        $this->authorize('view user voucher');
+        $voucher = user_voucher::where('status', 'active')->get();
+        return response()->json([
+            'Vouchers'    => $voucher
+        ], 200);
+    }
+    public function FetchAllVoucher(){
+        $voucher = user_voucher::all();
+        return response()->json([
+            'Vouchers'    => $voucher
+        ], 200);
+    }
 }

@@ -54,6 +54,13 @@ Route::middleware(['auth:sanctum', 'permission:buy voucher'])
 //Petugas Route
 Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
    ->post('/trash-transaction', [TrashTransactionController::class,'TrashTransaction']);
+//Fetching Data
+Route::middleware(['auth:sanctum', 'permission:view user voucher'])
+   ->get('/user-voucher', [UserVoucherController::class, 'FetchActiveVoucher']);
+
+Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
+
+
 
 // UMKM Route
 Route::middleware(['auth:sanctum', 'permission:view all voucher'])
