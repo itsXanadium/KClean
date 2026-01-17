@@ -36,14 +36,14 @@ class UserManagementController extends Controller
             'password' => Hash::make($validated['password']),
             'profile_qr' => $uuid,
         ]);
-
-        //Store qr
+        // $user->sendEmailVerificationNotification();
+        //Store qr  
         $qrPath = "qrcodes/users/{$uuid}.svg";
         Storage::disk('public')->put(
             $qrPath,
             QrCode::format('svg')
             ->size(200)
-            ->generate("USER:{$uuid}")
+            ->generate("api/profile/{$uuid}")
         );
         $user->update([
             'qr_code_path'=>$qrPath

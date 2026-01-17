@@ -29,19 +29,22 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'profile_qr' => $uuid,
-        ]);
+            // 'trash_transaction_qr'=>$uuid
+            ]);      
         $user->assignRole('user');
-        $user->sendEmailVerificationNotification();
-        $qrPath = "qrcodes/users/{$uuid}.svg";
+        $user->sendEmailVerificationNotification();  
+        $Profile_qrPath = "qrcodes/users/{$uuid}.svg";
         Storage::disk('public')->put(
-            $qrPath,
+            $Profile_qrPath,
             QrCode::format('svg')
             ->size(200)
-            ->generate("USER:{$uuid}")
+            ->generate(
+                url("/api/profile/{$uuid}")
+            )
         );
         $user->update([
-            'qr_code_path'=>$qrPath
-        ]);
+            'profile_qr_path'=>$Profile_qrPath,         
+        ]);  
         $token = $user->createToken('token')->plainTextToken;
         return response()->json([
             'message' => 'User registered!',
@@ -76,7 +79,7 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        $request->user()->currentAccessToken()->delete;
+        $request->user()->tokens()->delete();
         return response()->json([
             '{+}' => 'User Logged Out!'
         ],200);

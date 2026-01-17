@@ -28,11 +28,24 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role',
         'profile_qr',
-        // 'otp',
-        // 'otp_expires_at',
-        // 'otp_verified_at'
+        'profile_qr_path',
+        'trash_transaction_qr',
+        'transaction_qr_path',
+        'no_telp',
     ];
 
+    public function voucher(){
+        return $this->hasMany(Voucher::class);
+    }
+    public function trash_transaction(){
+        return $this->hasMany(trash_transaction::class);
+    }
+    public function user_voucher(){
+        return $this->hasMany(user_voucher::class);
+    }
+    public function voucher_transaction(){
+        return $this->hasMany(voucher_transaction::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
