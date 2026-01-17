@@ -47,7 +47,7 @@ Route::middleware(['auth:sanctum', 'permission:update own profile'])
 Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
 //Generating Trash QR
 Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
-   ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
+   ->post('/generate-trash-transaction-qr', [ProfileController::class,'GenerateTrashTransactionQR']);
 //Voucher Route
 Route::middleware(['auth:sanctum', 'permission:buy voucher'])
    ->post('/voucher-purchase', [UserVoucherController::class, 'BuyVoucher']);
