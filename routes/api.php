@@ -21,7 +21,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logout']);
 Route::middleware(['auth:sanctum', 'throttle:6,1'])
-->post('email/verification-notification', function(Request $request){
+->post('/email/verification-notification', function(Request $request){
    if ($request->user()->hasVerifiedEmail()){
       return response()->json([
          '{+}' => 'Email already verified!',
@@ -35,21 +35,21 @@ Route::middleware(['auth:sanctum', 'throttle:6,1'])
 Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])
     ->middleware(['signed'])
     ->name('verification.verify');
+
 // ===============================================
 //Admin Route
-Route::middleware(['auth:sanctum', 'permission:manage users'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:manage users'])
    ->post('/createuser/{role}', [UserManagementController::class, 'CreateUser']);
-// Genereate Trash QR
-
+   
 //Personal user Route
 Route::middleware(['auth:sanctum', 'permission:update own profile'])
    ->put('/update-profile', [ProfileController::class, 'Update']);
 Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
 //Generating Trash QR
-Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
-   ->post('/generate-trash-transaction-qr', [ProfileController::class,'GenerateTrashTransactionQR']);
+Route::middleware(['auth:sanctum', 'verified','permission:generate trash transaction qr'])
+   ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
 //Voucher Route
-Route::middleware(['auth:sanctum', 'permission:buy voucher'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:buy voucher'])
    ->post('/voucher-purchase', [UserVoucherController::class, 'BuyVoucher']);
 Route::middleware(['auth:sanctum', 'permission:use voucher'])
    ->post('/use-voucher', [VoucherTransactionController::class, 'UserVoucherTransaction']);   
@@ -59,25 +59,25 @@ Route::middleware(['auth:sanctum', 'permission:view user voucher'])
 Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
    
 //Petugas Route
-Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:create trash transactions'])
    ->post('/trash-transaction/{uuid}', [TrashTransactionController::class,'TrashTransaction']);
 
 
 
 // UMKM Route
-Route::middleware(['auth:sanctum', 'permission:view all voucher'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:view all voucher'])
    ->get('/voucher', [VoucherController::class, 'index']);
-Route::middleware(['auth:sanctum', 'permission:view active voucher'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:view active voucher'])
    ->get('/active-voucher', [VoucherController::class, 'showActiveVoucher']);
-Route::middleware(['auth:sanctum', 'permission:view expired voucher'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:view expired voucher'])
    ->get('/expired-voucher', [VoucherController::class, 'showExpiredVoucher']);
-Route::middleware(['auth:sanctum', 'permission:create voucher'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:create voucher'])
    ->post('/voucher', [VoucherController::class, 'store']);
-Route::middleware(['auth:sanctum', 'permission:view by id'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:view by id'])
    ->get('/voucher/{id}', [VoucherController::class, 'show']);
-Route::middleware(['auth:sanctum', 'permission:update voucher'])
+Route::middleware(['auth:sanctum', 'verified',  'permission:update voucher'])
    ->put('/voucher/{id}', [VoucherController::class, 'update']);
-Route::middleware(['auth:sanctum', 'permission:delete voucher'])
+Route::middleware(['auth:sanctum', 'verified',  'permission:delete voucher'])
    ->delete('/voucher/{id}', [VoucherController::class, 'destroy']);
-Route::middleware(['auth:sanctum','permission:scan voucher'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:scan voucher'])
    ->post('/voucher-redemption/{uuid}', [VoucherTransactionController::class, 'VoucherTransaction']);
