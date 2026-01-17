@@ -27,6 +27,8 @@ class RolePermissionSeeder extends Seeder
             'use voucher',
             'view user voucher',
             'view own qr',
+            'generate trash transaction qr',
+            'view trash transaction qr',
 
             //Petugas
             'scan user qr',
@@ -41,6 +43,10 @@ class RolePermissionSeeder extends Seeder
             'view total voucher used',
             'view weekly voucher redeemed',
             'view voucher totals',
+            'view all voucher',
+            'view by id',
+            'delete voucher',
+            'update voucher',
 
             //SuperAdmin
             'manage users',
@@ -63,6 +69,8 @@ class RolePermissionSeeder extends Seeder
             'use voucher',
             'view user voucher',
             'view own qr',
+            'generate trash transaction qr',
+            'view trash transaction qr'
         ]);
         //Create Petugas Role
         $petugas = Role::firstOrCreate(['name'=>'petugas']);
@@ -81,6 +89,10 @@ class RolePermissionSeeder extends Seeder
             'view total voucher used',
             'view weekly voucher redeemed',
             'view voucher totals',
+            'view all voucher',
+            'view by id',
+            'update voucher',
+            'delete voucher'
         ]);
     }
 }

@@ -32,10 +32,10 @@ class SuperAdminSeeder extends Seeder
             $qrPath,
             QrCode::format('svg')
             ->size(200)
-            ->generate("USER:{$uuid}")
+            ->generate("/api/profile/{$uuid}")
         );
         $admin->update([
-            'qr_code_path'=>$qrPath
+            'profile_qr_path'=>$qrPath
         ]);
     }
 }

@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             ->generate("USER:{$uuid}")
         );
         $user->update([
-            'qr_code_path'=>$qrPath
+            'profile_qr_path'=>$qrPath
         ]);
     }
 }
