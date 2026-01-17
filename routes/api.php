@@ -36,30 +36,31 @@ Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])
     ->middleware(['signed'])
     ->name('verification.verify');
 // ===============================================
-
-//Personal user Route
-Route::middleware(['auth:sanctum', 'permission:update own profile'])
-   ->put('/update', [ProfileController::class, 'Update']);
-
-Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
 //Admin Route
 Route::middleware(['auth:sanctum', 'permission:manage users'])
    ->post('/createuser/{role}', [UserManagementController::class, 'CreateUser']);
 // Genereate Trash QR
+
+//Personal user Route
+Route::middleware(['auth:sanctum', 'permission:update own profile'])
+   ->put('/update', [ProfileController::class, 'Update']);
+Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
+//Generating Trash QR
 Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
    ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
-// Buying Voucher
+//Voucher Route
 Route::middleware(['auth:sanctum', 'permission:buy voucher'])
    ->post('/voucher-purchase', [UserVoucherController::class, 'BuyVoucher']);
+Route::middleware(['auth:sanctum', 'permission:use voucher'])
+   ->post('/use-voucher', [VoucherTransactionController::class, 'UserVoucherTransaction']);   
+//Fetching Data
+Route::middleware(['auth:sanctum', 'permission:view user voucher'])
+   ->get('/user-voucher', [UserVoucherController::class, 'FetchActiveVoucher']);
+Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
    
 //Petugas Route
 Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
    ->post('/trash-transaction', [TrashTransactionController::class,'TrashTransaction']);
-//Fetching Data
-Route::middleware(['auth:sanctum', 'permission:view user voucher'])
-   ->get('/user-voucher', [UserVoucherController::class, 'FetchActiveVoucher']);
-
-Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
 
 
 
