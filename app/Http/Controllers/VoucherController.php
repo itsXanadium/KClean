@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Voucher;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -11,13 +12,13 @@ use Carbon\Carbon;
 
 class VoucherController extends Controller{
 use  AuthorizesRequests;
-    public function index(){
+    public function index(Request $request){
         $this->authorize('view all voucher');
-        $voucher = Voucher::all();
-
+        $user = $request->user();
+        $voucher = Voucher::where('umkm_id', $user->id)
+            ->get();
         return response()->json([
-            'message' =>'Voucher data',
-            'data'    => $voucher
+            'Vouchers'    => $voucher
         ], 200);
     }
     
@@ -78,13 +79,14 @@ use  AuthorizesRequests;
         }
     }
 
-    public function showActiveVoucher(){
+    public function showActiveVoucher(Request $request){
         $this->authorize('view active voucher');
-        $voucher = Voucher::where('status', 'active')->get()->count();
-
+        $user = $request->user();
+        $voucher = Voucher::where('umkm_id', $user->id)
+            ->where('status', 'active')
+            ->get();
         return response()->json([
-            'message' =>'Active voucher data',
-            'data'    => $voucher
+            'Vouchers'    => $voucher
         ], 200);
     }
 
@@ -107,13 +109,14 @@ use  AuthorizesRequests;
     //     ], 200);
     // }
 
-    public function showExpiredVoucher(){
+    public function showExpiredVoucher(Request $request){
         $this->authorize('view expired voucher');
-        $voucher = Voucher::where('status', 'expired')->get()->count();
-
+        $user = $request->user();
+        $voucher = Voucher::where('umkm_id', $user->id)
+            ->where('status', 'expired')
+            ->get();
         return response()->json([
-            'message' =>'Expired voucher data',
-            'data'    => $voucher
+            'Vouchers'    => $voucher
         ], 200);
     }
 
@@ -155,4 +158,18 @@ use  AuthorizesRequests;
         $voucher->delete();
         return response()->json(['message' => 'Voucher berhasil dihapus!'], 200);
     }
+
+    // public function destroy(Request $request, $id){
+    //     $this->authorize('delete voucher');
+    //     $user = $request->user();
+    //     $voucher = Voucher::findOrFail($id)
+    //         ->where('umkm_id', $user->id);
+        
+    //     // Storage::delete('voucher/'. $voucher->voucher_image);
+    //     $voucher->delete();
+
+    //     return response()->json([
+    //         'message'    => 'Voucher berhasil dihapus!'
+    //     ], 200);
+    // }
 }
