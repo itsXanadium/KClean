@@ -23,15 +23,15 @@ class TrashTransactionController extends Controller
         ]);
     }
 
-    public function TrashTransaction(Request $request){
+    public function TrashTransaction(Request $request, $uuid){
         $this->authorize('create trash transactions');
         $validated = $request->validate([
             'trash_type' => 'required',
             'trash_weight' => 'required',
-            'trash_transaction_qr'=>'required'
+            // 'trash_transaction_qr'=>'required'
     ]);
         // $uuid = Str::uuid()->toString();
-        $user = User::where('trash_transaction_qr', $validated['trash_transaction_qr'])->firstOrFail();
+        $user = User::where('trash_transaction_qr', $uuid)->firstOrFail();
         $points = round($validated['trash_weight']*0.2,2);
         $trashtransaction = FacadesDB::transaction(function() use($points, $user, $validated){
             $transaction = trash_transaction::create([

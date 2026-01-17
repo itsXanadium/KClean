@@ -13,7 +13,8 @@ class user_voucher extends Model
         'used_at',
         'actives_at',
         'expired_at',
-        'voucher_qr'
+        'voucher_qr',
+        'user_voucher_qr_path'
     ];
     public function user(){
         return $this->belongsTo(User::class);

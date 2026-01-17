@@ -49,7 +49,7 @@ class ProfileController extends Controller
             QrCode::format('svg')
             ->size(200)
             ->generate(
-                url("/trash_transaction/{$uuid}")
+                url("/trash-transaction/{$uuid}")
             )
         );
         $user->update([

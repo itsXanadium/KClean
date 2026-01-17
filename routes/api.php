@@ -60,7 +60,7 @@ Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
    
 //Petugas Route
 Route::middleware(['auth:sanctum', 'permission:create trash transactions'])
-   ->post('/trash-transaction', [TrashTransactionController::class,'TrashTransaction']);
+   ->post('/trash-transaction/{uuid}', [TrashTransactionController::class,'TrashTransaction']);
 
 
 
@@ -80,4 +80,4 @@ Route::middleware(['auth:sanctum', 'permission:update voucher'])
 Route::middleware(['auth:sanctum', 'permission:delete voucher'])
    ->delete('/voucher/{id}', [VoucherController::class, 'destroy']);
 Route::middleware(['auth:sanctum','permission:scan voucher'])
-   ->post('/voucher-redemption', [VoucherTransactionController::class, 'VoucherTransaction']);
+   ->post('/voucher-redemption/{uuid}', [VoucherTransactionController::class, 'VoucherTransaction']);
