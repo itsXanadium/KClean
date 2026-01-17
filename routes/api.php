@@ -10,6 +10,7 @@ use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\TrashTransactionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\UserVoucherController;
+use App\Http\Controllers\VoucherTransactionController;
 
 // Route::prefix('auth')->group(function(){
 //     Route::post('/login', [AuthController::class, 'login']);
@@ -77,4 +78,5 @@ Route::middleware(['auth:sanctum', 'permission:update voucher'])
    ->put('/voucher/{id}', [VoucherController::class, 'update']);
 Route::middleware(['auth:sanctum', 'permission:delete voucher'])
    ->delete('/voucher/{id}', [VoucherController::class, 'destroy']);
-
+Route::middleware(['auth:sanctum','permission:scan voucher'])
+   ->post('/voucher-redemption', [VoucherTransactionController::class, 'VoucherTransaction']);

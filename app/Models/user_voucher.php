@@ -21,4 +21,7 @@ class user_voucher extends Model
     public function voucher(){
         return $this->belongsTo(Voucher::class);
     }
+    public function vouchertransaction(){
+        return $this->hasMany(voucher_transaction::class);
+    }
 }

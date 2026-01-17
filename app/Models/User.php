@@ -46,6 +46,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function user_voucher(){
         return $this->hasMany(user_voucher::class);
     }
+    public function voucher_transaction(){
+        return $this->hasMany(voucher_transaction::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
