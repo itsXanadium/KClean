@@ -43,7 +43,7 @@ Route::middleware(['auth:sanctum', 'permission:manage users'])
 
 //Personal user Route
 Route::middleware(['auth:sanctum', 'permission:update own profile'])
-   ->put('/update', [ProfileController::class, 'Update']);
+   ->put('/update-profile', [ProfileController::class, 'Update']);
 Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
 //Generating Trash QR
 Route::middleware(['auth:sanctum', 'permission:generate trash transaction qr'])
