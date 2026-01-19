@@ -16,6 +16,11 @@ use App\Http\Controllers\VoucherTransactionController;
 //     Route::post('/login', [AuthController::class, 'login']);
 // });
 
+//Default Route
+Route::get('/api', function(){
+    echo ("API IS running" );
+});
+
 // User Authentication
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
