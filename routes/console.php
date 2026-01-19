@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('voucher:update-expired')
-    ->daily();
+    ->everyFiveMinutes();
 
 Schedule::command('user_voucher:update-expired')
-    ->daily();
+    ->everyFiveMinutes();
     
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
