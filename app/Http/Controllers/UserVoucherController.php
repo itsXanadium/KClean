@@ -28,6 +28,9 @@ class UserVoucherController extends Controller
             if($user->points < $voucher->points_required){
                 abort(400, 'Insufficient Fund!');
             }
+            if($voucher->status !=='active'){
+                abort(400, "The voucher is no longer purchasable");
+            }
             $user->decrement('points', $voucher->points_required);
              $voucher_qr_path = "voucher_qr/users/{$uuid}.svg";
             Storage::disk('public')->put(
