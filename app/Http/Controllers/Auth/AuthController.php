@@ -21,18 +21,31 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'max:255', 'unique:users'],
+            'no_kk' => ['required'],
             'password' => ['required', 'confirmed', 'min:10'],
         ]);
         $uuid = Str::uuid()->toString();
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'no_kk' => $validated['no_kk'],
             'password' => Hash::make($validated['password']),
             'profile_qr' => $uuid,
+            'trash_transaction_qr' => $uuid
             // 'trash_transaction_qr'=>$uuid
             ]);      
         $user->assignRole('user');
-        $user->sendEmailVerificationNotification();  
+        $user->sendEmailVerificationNotification(); 
+        
+        $trashQR = "trash_transaction_qr/users/{$uuid}.svg";
+        Storage::disk('public')->put(
+            $trashQR,
+            QrCode::format('svg')
+            ->size(200)
+            ->generate(
+                url("/api/trash-transaction/{$uuid}")
+            )
+        );
         $Profile_qrPath = "qrcodes/users/{$uuid}.svg";
         Storage::disk('public')->put(
             $Profile_qrPath,
@@ -43,7 +56,8 @@ class AuthController extends Controller
             )
         );
         $user->update([
-            'profile_qr_path'=>$Profile_qrPath,         
+            'profile_qr_path'=>$Profile_qrPath,  
+            'transaction_qr_path' => $trashQR       
         ]);  
         $token = $user->createToken('token')->plainTextToken;
         return response()->json([
@@ -53,6 +67,10 @@ class AuthController extends Controller
             'token'=> $token,
         ], 201);
     }
+
+
+
+
     public function login(Request $request){
         $credentials = $request->validate([
             'email' => ['required', 'email'],
