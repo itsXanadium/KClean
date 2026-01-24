@@ -38,17 +38,25 @@ Route::middleware(['auth:sanctum', 'throttle:6,1'])
       ],200);
 });
 Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])
-    ->middleware(['signed'])
-    ->name('verification.verify');
+->middleware(['signed'])
+->name('verification.verify');
 
+Route::middleware(['auth:sanctum', 'verified'])
+   ->patch('/update-profile', [ProfileController::class, 'Update']);
 // ===============================================
 //Admin Route
-Route::middleware(['auth:sanctum', 'verified', 'permission:manage users'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:manage roles'])
    ->post('/createuser/{role}', [UserManagementController::class, 'CreateUser']);
-   
-//Personal user Route
-Route::middleware(['auth:sanctum', 'permission:update own profile'])
-   ->patch('/update-profile', [ProfileController::class, 'Update']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:see user'])
+   ->get('/users', [UserManagementController::class, 'fetchUser']);  
+Route::middleware(['auth:sanctum', 'verified', 'permission:manage users'])
+   ->patch('/user/{id}', [UserManagementController::class, 'editUser']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:manage users'])
+   ->delete('/user/{id}', [UserManagementController::class, 'deleteUser']);
+
+
+
+   //Personal user Route
 Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
 //Generating Trash QR
 Route::middleware(['auth:sanctum', 'verified','permission:generate trash transaction qr'])
@@ -62,7 +70,10 @@ Route::middleware(['auth:sanctum', 'permission:use voucher'])
 Route::middleware(['auth:sanctum', 'permission:view user voucher'])
    ->get('/user-voucher', [UserVoucherController::class, 'FetchActiveVoucher']);
 Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
-   
+Route::middleware(['auth:sanctum'])
+   ->get('/user-data', [ProfileController::class, 'fetchUserData']);
+
+
 //Petugas Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:create trash transactions'])
    ->post('/trash-transaction/{uuid}', [TrashTransactionController::class,'TrashTransaction']);

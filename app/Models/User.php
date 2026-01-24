@@ -32,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'trash_transaction_qr',
         'transaction_qr_path',
         'no_telp',
+        'no_kk',
     ];
 
     public function voucher(){
@@ -46,6 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function voucher_transaction(){
         return $this->hasMany(voucher_transaction::class);
     }
+
     /**
      * The attributes that should be hidden for serialization.
      *

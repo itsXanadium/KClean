@@ -52,6 +52,7 @@ class RolePermissionSeeder extends Seeder
             'manage users',
             'manage roles',
             'manage permission',
+            'see user',
         ];
         foreach($permissions as $permission){
             Permission::firstOrCreate(['name'=> $permission]);
@@ -59,7 +60,12 @@ class RolePermissionSeeder extends Seeder
 
         //Create SuperAdmin Role
         $superAdmin = Role::firstOrCreate(['name'=>'super-admin']);
-        $superAdmin->givePermissionTo(Permission::all());
+        $superAdmin->givePermissionTo([
+            'manage users',
+            'manage roles',
+            'manage permission',
+            'see user',
+        ]);
         //Create user role
         $user = Role::firstOrCreate(['name'=>'user']);
         $user->givePermissionTo([

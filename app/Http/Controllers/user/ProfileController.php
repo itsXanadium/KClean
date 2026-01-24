@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -16,13 +17,18 @@ class ProfileController extends Controller
     public function Update(Request $request){
         $user = $request->user();
         // $user = User::findOrFail($id);
-        $this->authorize('update own profile', $user);
+        // $this->authorize('update own profile', $user);
 
         $validated=$request->validate([
             'name' =>['sometimes', 'string'],
-            'no_telp' =>['sometimes', 'string'],
-            'email' => ['sometimes', 'email', 'unique:users,email,' . $user->id],
+            'no_kk' => ['sometimes', 'string'],
+            'no_telp' => ['sometimes', 'string'],
+            'email' => ['sometimes', 'email', 'unique:users,email,' . $user -> id],
+            'password' => ['sometimes', 'confirmed', 'min:10'],
         ]);
+        if(isset($validated['password'])){
+            $validated['password'] = Hash::make($validated['password']);
+        }
         $user->update($validated);
         return response()->json([
             '{+}'=>'user updated',
@@ -60,5 +66,13 @@ class ProfileController extends Controller
             '{+}'=> 'Trash Transaction QR Generated!',
             'QR' =>  $Trash_transaction_qrPath
             ]);
+    }
+
+    public function fetchUserData(Request $request){
+        $user = $request->user();
+        $userData = User::where('id', $user->id)->first();
+        return response()->json([
+            "Data"=> $userData
+        ],200 );        
     }
 }
