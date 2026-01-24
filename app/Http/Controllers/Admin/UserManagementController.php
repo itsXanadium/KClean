@@ -54,4 +54,16 @@ class UserManagementController extends Controller
             'user' => $user
         ],201);
     }
+
+     public function fetchUser(Request $request){
+        $this->authorize('see user');
+        $user = $request->user();
+
+        $userData = User::all()->filter(function ($user){
+            return !$user->hasRole('super-admin');
+        });
+        return response()->json([
+            "Data"=> $userData
+        ],200 );        
+    }
 }
