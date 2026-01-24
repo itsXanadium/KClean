@@ -44,6 +44,8 @@ Route::middleware(['auth:sanctum', 'verified', 'permission:see user'])
    ->get('/users', [UserManagementController::class, 'fetchUser']);  
 Route::middleware(['auth:sanctum', 'verified', 'permission:manage users'])
    ->patch('/user/{id}', [UserManagementController::class, 'editUser']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:manage users'])
+   ->delete('/user/{id}', [UserManagementController::class, 'deleteUser']);
 
 
 

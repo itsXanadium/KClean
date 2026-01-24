@@ -86,4 +86,14 @@ class UserManagementController extends Controller
         'Updated Data' => $editedUser
     ],200);
     }
+
+    public function deleteUser(Request $request, $id){
+        $user = $request->user();
+        $this->authorize('manage users');
+        $deleteUser = User::findOrFail($id)->delete();
+        return response()->json([
+            '{-}' => "user deleted!",
+            'User' => $deleteUser
+        ]);
+    }
 }
