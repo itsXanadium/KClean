@@ -16,7 +16,7 @@ class ProfileController extends Controller
     public function Update(Request $request){
         $user = $request->user();
         // $user = User::findOrFail($id);
-        $this->authorize('update own profile', $user);
+        // $this->authorize('update own profile', $user);
 
         $validated=$request->validate([
             'name' =>['sometimes', 'string'],

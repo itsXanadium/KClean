@@ -33,9 +33,11 @@ Route::middleware(['auth:sanctum', 'throttle:6,1'])
       ],200);
 });
 Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])
-    ->middleware(['signed'])
-    ->name('verification.verify');
+->middleware(['signed'])
+->name('verification.verify');
 
+Route::middleware(['auth:sanctum', 'verified'])
+   ->patch('/update-profile', [ProfileController::class, 'Update']);
 // ===============================================
 //Admin Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:manage roles'])
@@ -50,8 +52,6 @@ Route::middleware(['auth:sanctum', 'verified', 'permission:manage users'])
 
 
    //Personal user Route
-Route::middleware(['auth:sanctum', 'permission:update own profile'])
-   ->patch('/update-profile', [ProfileController::class, 'Update']);
 Route::get('profile/{uuid}', [ProfileController::class, 'UserProfileQRScan']);
 //Generating Trash QR
 Route::middleware(['auth:sanctum', 'verified','permission:generate trash transaction qr'])
