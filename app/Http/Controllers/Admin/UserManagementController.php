@@ -74,9 +74,12 @@ class UserManagementController extends Controller
             'no_kk' => ['sometimes', 'string'],
             'no_telp' => ['sometimes', 'string'],
             'email' => ['sometimes', 'email', 'unique:users,email,' . $user -> id],
-            'password' => ['sometimes', 'password', 'min:10'],
+            'password' => ['sometimes', 'string', 'min:10'],
         ]);
         $editedUser = User::findOrFail($id);
+        if (isset($validated['password'])){
+            $validated['password'] = Hash::make($validated['password']);
+        }
         $editedUser -> update($validated);
     return response()->json([
         '{+}' => 'User Updated!',
