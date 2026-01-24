@@ -60,17 +60,18 @@ class UserManagementController extends Controller
         $user = $request->user();
         $userData = User::all()->filter(function ($user){
             return !$user->hasRole('super-admin');
-        })->map(function ($user){
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'roles' => $user->getRoleNames(),
-                'points' => $user->points,
-                'no_kk' => $user->no_kk,
-                'no_telp' => $user->no_telp,
-            ];
         })->values();
+        // ->map(function ($user){
+        //     return [
+        //         'id' => $user->id,
+        //         'name' => $user->name,
+        //         'email' => $user->email,
+        //         'roles' => $user->getRoleNames(),
+        //         'points' => $user->points,
+        //         'no_kk' => $user->no_kk,
+        //         'no_telp' => $user->no_telp,
+        //     ];
+        // })->values();
         return response()->json([
             "Data"=> $userData
         ],200 );        
