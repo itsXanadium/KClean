@@ -61,4 +61,12 @@ class ProfileController extends Controller
             'QR' =>  $Trash_transaction_qrPath
             ]);
     }
+
+    public function fetchUserData(Request $request){
+        $user = $request->user();
+        $userData = User::where('id', $user->id)->first();
+        return response()->json([
+            "Data"=> $userData
+        ],200 );        
+    }
 }

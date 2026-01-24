@@ -40,7 +40,8 @@ Route::get('/email/verify/{id}/{hash}', [EmailController::class, 'verify'])
 //Admin Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:manage users'])
    ->post('/createuser/{role}', [UserManagementController::class, 'CreateUser']);
-   
+Route::middleware(['auth:sanctum', 'verified', 'permission:see user'])
+   ->get('/users', [UserManagementController::class, 'fetchUser']);  
 //Personal user Route
 Route::middleware(['auth:sanctum', 'permission:update own profile'])
    ->patch('/update-profile', [ProfileController::class, 'Update']);
@@ -58,8 +59,9 @@ Route::middleware(['auth:sanctum', 'permission:view user voucher'])
    ->get('/user-voucher', [UserVoucherController::class, 'FetchActiveVoucher']);
 Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
 Route::middleware(['auth:sanctum'])
-    ->get('/notifications', [App\Http\Controllers\NotificationController::class, 'index']);
-   
+   ->get('/user-data', [ProfileController::class, 'fetchUserData']);
+
+
 //Petugas Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:create trash transactions'])
    ->post('/trash-transaction/{uuid}', [TrashTransactionController::class,'TrashTransaction']);
