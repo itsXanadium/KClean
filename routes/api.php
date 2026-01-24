@@ -57,6 +57,8 @@ Route::middleware(['auth:sanctum', 'permission:use voucher'])
 Route::middleware(['auth:sanctum', 'permission:view user voucher'])
    ->get('/user-voucher', [UserVoucherController::class, 'FetchActiveVoucher']);
 Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
+Route::middleware(['auth:sanctum'])
+    ->get('/notifications', [App\Http\Controllers\NotificationController::class, 'index']);
    
 //Petugas Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:create trash transactions'])
