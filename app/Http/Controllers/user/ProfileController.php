@@ -20,8 +20,9 @@ class ProfileController extends Controller
 
         $validated=$request->validate([
             'name' =>['sometimes', 'string'],
-            'no_telp' =>['sometimes', 'string'],
-            'email' => ['sometimes', 'email', 'unique:users,email,' . $user->id],
+            'no_kk' => ['sometimes', 'string'],
+            'no_telp' => ['sometimes', 'string'],
+            'email' => ['sometimes', 'email', 'unique:users,email,' . $user -> id],
         ]);
         $user->update($validated);
         return response()->json([
