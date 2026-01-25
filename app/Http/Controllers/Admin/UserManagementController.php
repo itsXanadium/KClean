@@ -36,6 +36,7 @@ class UserManagementController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'profile_qr' => $uuid,
+            'email_verified_at' => now(),
         ]);
         // $user->sendEmailVerificationNotification();
         //Store qr  

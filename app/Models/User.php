@@ -33,6 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'transaction_qr_path',
         'no_telp',
         'no_kk',
+        'email_verified_at'
     ];
 
     public function voucher(){
