@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\Fluent\Concerns\Has;
+use Illuminate\Validation\Rule;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class UserManagementController extends Controller
@@ -69,17 +70,18 @@ class UserManagementController extends Controller
     public function editUser(Request $request, $id){
         $user = $request->user();
         $this->authorize('manage users');
-        $validated = $request->validate([
-            'name' =>['sometimes', 'string'],
-            'no_kk' => ['sometimes', 'string'],
-            'no_telp' => ['sometimes', 'string'],
-            'email' => ['sometimes', 'email', 'unique:users,email,' . $user -> id],
-            'password' => ['sometimes', 'string', 'min:10'],
-        ]);
         $editedUser = User::findOrFail($id);
         if (isset($validated['password'])){
             $validated['password'] = Hash::make($validated['password']);
         }
+        $validated = $request->validate([
+            'name' =>['sometimes', 'string'],
+            'no_kk' => ['sometimes', 'string'],
+            'no_telp' => ['sometimes', 'string'],
+            'email' => ['sometimes', 'nullable','email', Rule::unique('users', 'email')->ignore($editedUser->id)],
+            'password' => ['sometimes', 'string', 'min:10'],
+        ]);
+        // 'unique:users,email,' . $user -> id
         $editedUser -> update($validated);
     return response()->json([
         '{+}' => 'User Updated!',
