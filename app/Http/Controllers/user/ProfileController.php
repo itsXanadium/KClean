@@ -25,6 +25,7 @@ class ProfileController extends Controller
             'no_telp' => ['sometimes', 'string'],
             'email' => ['sometimes', 'email', 'unique:users,email,' . $user -> id],
             'password' => ['sometimes', 'confirmed', 'min:10'],
+            'avatar' => ['sometimes', 'string'],
         ]);
         if(isset($validated['password'])){
             $validated['password'] = Hash::make($validated['password']);
