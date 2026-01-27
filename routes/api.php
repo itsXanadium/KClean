@@ -11,6 +11,7 @@ use App\Http\Controllers\TrashTransactionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\UserVoucherController;
 use App\Http\Controllers\VoucherTransactionController;
+use App\Http\Controllers\NotificationController;
 
 // Route::prefix('auth')->group(function(){
 //     Route::post('/login', [AuthController::class, 'login']);
@@ -67,6 +68,9 @@ Route::middleware(['auth:sanctum', 'permission:view user voucher'])
 Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
 Route::middleware(['auth:sanctum'])
    ->get('/user-data', [ProfileController::class, 'fetchUserData']);
+
+Route::middleware('auth:sanctum')
+   ->get('/notifications', [NotificationController::class, 'index']);
 
 
 //Petugas Route
