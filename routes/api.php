@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\UserVoucherController;
 use App\Http\Controllers\VoucherTransactionController;
 use App\Http\Controllers\NotificationController;
+use App\Models\trash_transaction;
 
 // Route::prefix('auth')->group(function(){
 //     Route::post('/login', [AuthController::class, 'login']);
@@ -83,8 +84,10 @@ Route::middleware(['auth:sanctum', 'permission:view total transactions'])
    ->get('/trash-transaction-history', [TrashTransactionController::class, 'ViewTrashTransactionHitsory']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:view total transactions'])
    ->get('/trash-transaction-total-today', [TrashTransactionController::class, 'TrashTransactionTotal']);
+Route::middleware(['auth:sanctum','verified', 'permission:view total weight'])
+   ->get('trash-weight-today', [TrashTransactionController::class, 'TotalWeightToday']);
 
-// UMKM Route
+   // UMKM Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:view all voucher'])
    ->get('/voucher', [VoucherController::class, 'index']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:view active voucher'])

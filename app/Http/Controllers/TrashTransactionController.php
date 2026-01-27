@@ -72,4 +72,17 @@ class TrashTransactionController extends Controller
             'Today Total Transaction'=> $transactionCount
         ],200);
     }
+
+    public function TotalWeightToday(Request $request){
+        $this->authorize('view total weight');
+
+        $user = $request->user();
+        $weightCount = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->sum('trash_weight');
+    
+        return response()->json([
+            'Today Total Trash Weighted'=> $weightCount
+        ],200);
+    }
+
+
 }

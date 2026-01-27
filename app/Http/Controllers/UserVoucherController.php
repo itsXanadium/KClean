@@ -67,8 +67,7 @@ class UserVoucherController extends Controller
             'Vouchers'    => $voucher
         ], 200);
     }
-    public function FetchAllVoucher(Request $request){
-         $user = $request->user();
+    public function FetchAllVoucher(){
         $voucher = user_voucher::all();
         return response()->json([
             'Vouchers'    => $voucher
