@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\trash_transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Container\Attributes\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -49,5 +50,16 @@ class TrashTransactionController extends Controller
         '{+}' => 'Transaction Success',
         'Data' => $trashtransaction
     ]);
+    }
+    // 'view total transactions',
+    // 'view total weight',
+    // 'view total point input',
+    public function ViewTrashTransactionHitsory(Request $request){
+        $this->authorize('view total transactions');
+        $user = $request->user();
+        $transaction = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->get();
+        return response()->json([
+            'Trash_Transaction' => $transaction
+        ],200);
     }
 }

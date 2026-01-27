@@ -72,8 +72,8 @@ Route::middleware(['auth:sanctum'])
 //Petugas Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:create trash transactions'])
    ->post('/trash-transaction/{uuid}', [TrashTransactionController::class,'TrashTransaction']);
-
-
+Route::middleware(['auth:sanctum', 'permission:view total transactions'])
+   ->get('/trash-transaction-history', [TrashTransactionController::class, 'ViewTrashTransactionHitsory']);
 
 // UMKM Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:view all voucher'])

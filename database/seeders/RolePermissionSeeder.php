@@ -34,6 +34,9 @@ class RolePermissionSeeder extends Seeder
             'scan user qr',
             'insert points',
             'create trash transactions',
+            'view total transactions',
+            'view total weight',
+            'view total point input',
 
             //UMKM
             'create voucher',
@@ -84,6 +87,9 @@ class RolePermissionSeeder extends Seeder
             'scan user qr',
             'insert points',
             'create trash transactions',
+            'view total transactions',
+            'view total weight',
+            'view total point input',
         ]);
         //Create UMKM Role
         $umkm = Role::firstOrCreate(['name'=>'umkm']);
