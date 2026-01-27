@@ -83,6 +83,16 @@ class TrashTransactionController extends Controller
             'Today Total Trash Weighted'=> $weightCount
         ],200);
     }
+    public function TotalPointInput(Request $request){
+        $this->authorize('view total point input');
+
+        $user = $request->user();
+        $weightCount = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->sum('points');
+    
+        return response()->json([
+            'Today Total Point Inputted'=> $weightCount
+        ],200);
+    }
 
 
 }

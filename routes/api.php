@@ -86,6 +86,8 @@ Route::middleware(['auth:sanctum', 'verified', 'permission:view total transactio
    ->get('/trash-transaction-total-today', [TrashTransactionController::class, 'TrashTransactionTotal']);
 Route::middleware(['auth:sanctum','verified', 'permission:view total weight'])
    ->get('trash-weight-today', [TrashTransactionController::class, 'TotalWeightToday']);
+Route::middleware(['auth:sanctum','verified', 'permission:view total point input'])
+   ->get('point-input-today', [TrashTransactionController::class, 'TotalPointInput']);
 
    // UMKM Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:view all voucher'])
