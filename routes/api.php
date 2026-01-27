@@ -68,6 +68,9 @@ Route::middleware(['auth:sanctum', 'permission:view user voucher'])
 Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
 Route::middleware(['auth:sanctum'])
    ->get('/user-data', [ProfileController::class, 'fetchUserData']);
+   
+   
+
 
 Route::middleware('auth:sanctum')
    ->get('/notifications', [NotificationController::class, 'index']);
@@ -78,6 +81,8 @@ Route::middleware(['auth:sanctum', 'verified', 'permission:create trash transact
    ->post('/trash-transaction/{uuid}', [TrashTransactionController::class,'TrashTransaction']);
 Route::middleware(['auth:sanctum', 'permission:view total transactions'])
    ->get('/trash-transaction-history', [TrashTransactionController::class, 'ViewTrashTransactionHitsory']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:view total transactions'])
+   ->get('/trash-transaction-total-today', [TrashTransactionController::class, 'TrashTransactionTotal']);
 
 // UMKM Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:view all voucher'])

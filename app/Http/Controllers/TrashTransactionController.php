@@ -62,4 +62,14 @@ class TrashTransactionController extends Controller
             'Trash_Transaction' => $transaction
         ],200);
     }
+
+    public function TrashTransactionTotal(Request $request){
+        $this->authorize('view total transactions');
+        $user = $request->user();
+        $transactionCount = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->count();
+
+        return response()->json([
+            'Today Total Transaction'=> $transactionCount
+        ],200);
+    }
 }
