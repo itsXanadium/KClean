@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\trash_transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Container\Attributes\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -50,4 +51,48 @@ class TrashTransactionController extends Controller
         'Data' => $trashtransaction
     ]);
     }
+    // 'view total transactions',
+    // 'view total weight',
+    // 'view total point input',
+    public function ViewTrashTransactionHitsory(Request $request){
+        $this->authorize('view total transactions');
+        $user = $request->user();
+        $transaction = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->get();
+        return response()->json([
+            'Trash_Transaction' => $transaction
+        ],200);
+    }
+
+    public function TrashTransactionTotal(Request $request){
+        $this->authorize('view total transactions');
+        $user = $request->user();
+        $transactionCount = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->count();
+
+        return response()->json([
+            'Today Total Transaction'=> $transactionCount
+        ],200);
+    }
+
+    public function TotalWeightToday(Request $request){
+        $this->authorize('view total weight');
+
+        $user = $request->user();
+        $weightCount = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->sum('trash_weight');
+    
+        return response()->json([
+            'Today Total Trash Weighted'=> $weightCount
+        ],200);
+    }
+    public function TotalPointInput(Request $request){
+        $this->authorize('view total point input');
+
+        $user = $request->user();
+        $weightCount = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->sum('points');
+    
+        return response()->json([
+            'Today Total Point Inputted'=> $weightCount
+        ],200);
+    }
+
+
 }
