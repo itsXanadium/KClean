@@ -92,7 +92,7 @@ use  AuthorizesRequests;
     public function ActiveVoucher(Request $request){
         $this->authorize('view active voucher');
         $user = $request->user();
-        $voucher = Voucher::all()->where('status', 'active');
+        $voucher = Voucher::where('status', 'active')->get();
         return response()->json([
             'Vouchers'    => $voucher
         ], 200);
