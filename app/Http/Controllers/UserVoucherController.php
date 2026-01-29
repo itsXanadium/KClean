@@ -32,8 +32,12 @@ class UserVoucherController extends Controller
             if($voucher->status !=='active'){
                 abort(400, "The voucher is no longer purchasable");
             }
+            if($voucher->limit === 0){
+                abort(400, "Voucher Sold out");
+            }
             $user->decrement('points', $voucher->points_required);
-             $voucher_qr_path = "voucher_qr/users/{$uuid}.svg";
+            $voucher->decrement('limit');
+            $voucher_qr_path = "voucher_qr/users/{$uuid}.svg";
             Storage::disk('public')->put(
                 $voucher_qr_path,
                 QrCode::format('svg')
