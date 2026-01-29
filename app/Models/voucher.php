@@ -18,6 +18,7 @@ class Voucher extends Model
         'expired_at',
         'umkm_id',
         'status',
+        'limit',
     ];
 
     public function user()

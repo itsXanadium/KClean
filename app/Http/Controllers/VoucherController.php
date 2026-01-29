@@ -32,6 +32,7 @@ use  AuthorizesRequests;
             'voucher_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'actives_at'=>'required',
             'expired_at' => 'required',
+            'limit' => 'required',
         ]);
 
         //upload image
@@ -48,6 +49,7 @@ use  AuthorizesRequests;
             'actives_at'=>$request->actives_at,
             'expired_at' => $request->expired_at,
             'umkm_id' => Auth::user()->id,
+            'limit' => $request->limit,
         ]);
 
         if($voucher){
@@ -98,25 +100,6 @@ use  AuthorizesRequests;
         ], 200);
     }
 
-    // public function expiredVoucher(){
-    //     $now = Carbon::now();
-    //     $expiredVouchers = Voucher::where('status', 'active')
-    //         ->where('expired_at', '<', $now)
-    //         ->get();
-        
-    //     $updatedCount = 0;
-    //     foreach($expiredVouchers as $voucher){
-    //         $voucher->update(['status' => 'expired']);
-    //         $updatedCount++;
-    //     }
-        
-    //     return response()->json([
-    //         'message' => 'Voucher expiration check completed',
-    //         'updated_count' => $updatedCount,
-    //         'data' => $expiredVouchers
-    //     ], 200);
-    // }
-
     public function showExpiredVoucher(Request $request){
         $this->authorize('view expired voucher');
         $user = $request->user();
@@ -166,18 +149,4 @@ use  AuthorizesRequests;
         $voucher->delete();
         return response()->json(['message' => 'Voucher berhasil dihapus!'], 200);
     }
-
-    // public function destroy(Request $request, $id){
-    //     $this->authorize('delete voucher');
-    //     $user = $request->user();
-    //     $voucher = Voucher::findOrFail($id)
-    //         ->where('umkm_id', $user->id);
-        
-    //     // Storage::delete('voucher/'. $voucher->voucher_image);
-    //     $voucher->delete();
-
-    //     return response()->json([
-    //         'message'    => 'Voucher berhasil dihapus!'
-    //     ], 200);
-    // }
 }
