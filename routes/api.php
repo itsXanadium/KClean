@@ -60,7 +60,7 @@ Route::middleware(['auth:sanctum', 'verified','permission:generate trash transac
    ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
 //Voucher Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:buy voucher'])
-   ->post('/voucher-purchase', [UserVoucherController::class, 'BuyVoucher']);
+   ->post('/voucher-purchase/{id}', [UserVoucherController::class, 'BuyVoucher']);
 Route::middleware(['auth:sanctum', 'permission:use voucher'])
    ->post('/use-voucher', [VoucherTransactionController::class, 'UserVoucherTransaction']);   
 //Fetching Data

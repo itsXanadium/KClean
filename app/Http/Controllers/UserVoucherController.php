@@ -16,13 +16,14 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class UserVoucherController extends Controller
 {
     use AuthorizesRequests;
-    public function BuyVoucher(Request $request){
+    public function BuyVoucher(Request $request, $id){
         $this->authorize('buy voucher');
-        $validated = $request->validate([
-            'voucher_id' => 'required|exists:vouchers,id',
-        ]);
-        $purchase = DB::transaction(function()use($validated){
-            $voucher = Voucher::lockForUpdate()->findOrFail($validated['voucher_id']);
+        // $validated = $request->validate([
+        //     'voucher_id' => 'required|exists:vouchers,id',
+        // ]);
+        // $id = Voucher::findOrFail($id);
+        $purchase = DB::transaction(function()use($id){
+            $voucher = Voucher::lockForUpdate()->findOrFail($id);
             $uuid = Str::uuid()->toString();
             $user= User::lockForUpdate()->findOrFail(Auth::id());
             if($user->points < $voucher->points_required){

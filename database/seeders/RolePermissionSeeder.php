@@ -79,7 +79,8 @@ class RolePermissionSeeder extends Seeder
             'view user voucher',
             'view own qr',
             'generate trash transaction qr',
-            'view trash transaction qr'
+            'view trash transaction qr',
+            'view active voucher',
         ]);
         //Create Petugas Role
         $petugas = Role::firstOrCreate(['name'=>'petugas']);
