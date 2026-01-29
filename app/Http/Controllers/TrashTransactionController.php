@@ -50,4 +50,49 @@ class TrashTransactionController extends Controller
         'Data' => $trashtransaction
     ]);
     }
+
+    public function showTotalTransactionToday(Request $request){
+        $this->authorize('view total transaction today');
+        $user = $request->user();
+        $transactionToday = trash_transaction::where('petugas_id', $user->id)
+            ->whereDate('created_at', today())
+            ->get()
+            ->sum();
+        return response()->json([
+            'Total Transaction Today' => $transactionToday
+        ]);
+    }
+
+    public function showTotalTransaction(Request $request){
+        $this->authorize('view total transaction');
+        $user = $request->user();
+        $totalTransaction = trash_transaction::where('petugas_id', $user->id)
+            ->get()
+            ->count();
+        return response()->json([
+            'Total Transaction' => $totalTransaction
+        ]);
+    }
+
+    public function showTotalSentPoints(Request $request){
+        $this->authorize('view total sent points');
+        $user = $request->user();
+        $totalSentPoints = trash_transaction::where('petugas_id', $user->id)
+            ->get()
+            ->sum();
+        return response()->json([
+            'Total Sent Points' => $totalSentPoints
+        ]);
+    }
+
+    public function showTransactionHistory(Request $request){
+        $this->authorize('view transaction history');
+        $user = $request->user();
+        $transactionHistory = trash_transaction::where('petugas_id', $user->id)
+            ->get()
+            ->paginate(10);
+        return response()->json([
+            'Transaction History' => $transactionHistory
+        ]);
+    }
 }
