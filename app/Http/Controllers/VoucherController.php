@@ -33,6 +33,7 @@ use  AuthorizesRequests;
             'actives_at'=>'required',
             'expired_at' => 'required',
             'limit' => 'required',
+            'discount_price'=>'required',
         ]);
 
         //upload image
@@ -50,6 +51,7 @@ use  AuthorizesRequests;
             'expired_at' => $request->expired_at,
             'umkm_id' => Auth::user()->id,
             'limit' => $request->limit,
+            'discount_price'=>$request->discount_price
         ]);
 
         if($voucher){
