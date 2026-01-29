@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\UserVoucherController;
 use App\Http\Controllers\VoucherTransactionController;
 use App\Http\Controllers\NotificationController;
+use App\Models\trash_transaction;
 
 // Route::prefix('auth')->group(function(){
 //     Route::post('/login', [AuthController::class, 'login']);
@@ -59,7 +60,7 @@ Route::middleware(['auth:sanctum', 'verified','permission:generate trash transac
    ->post('/generate_trash_transaction_qr', [ProfileController::class,'GenerateTrashTransactionQR']);
 //Voucher Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:buy voucher'])
-   ->post('/voucher-purchase', [UserVoucherController::class, 'BuyVoucher']);
+   ->post('/voucher-purchase/{id}', [UserVoucherController::class, 'BuyVoucher']);
 Route::middleware(['auth:sanctum', 'permission:use voucher'])
    ->post('/use-voucher', [VoucherTransactionController::class, 'UserVoucherTransaction']);   
 //Fetching Data
@@ -68,6 +69,10 @@ Route::middleware(['auth:sanctum', 'permission:view user voucher'])
 Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
 Route::middleware(['auth:sanctum'])
    ->get('/user-data', [ProfileController::class, 'fetchUserData']);
+Route::middleware(['auth:sanctum'])
+   ->get('/user-points', [ProfileController::class, 'fetchUserPoint']);
+   
+
 
 Route::middleware('auth:sanctum')
    ->get('/notifications', [NotificationController::class, 'index']);
@@ -76,20 +81,22 @@ Route::middleware('auth:sanctum')
 //Petugas Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:create trash transactions'])
    ->post('/trash-transaction/{uuid}', [TrashTransactionController::class,'TrashTransaction']);
-Route::middleware(['auth:sanctum', 'verified', 'permission:view total transaction today'])
-   ->get('/trash-transaction-today', [TrashTransactionController::class, 'showTotalTransactionToday']);
-Route::middleware(['auth:sanctum', 'verified', 'permission:view total transaction'])
-   ->get('/trash-transaction', [TrashTransactionController::class, 'showTotalTransaction']);
-Route::middleware(['auth:sanctum', 'verified', 'permission:view total sent points'])
-   ->get('/trash-transaction-points', [TrashTransactionController::class, 'showTotalSentPoints']);
-Route::middleware(['auth:sanctum', 'verified', 'permission:view transaction history'])
-   ->get('/trash-transaction-history', [TrashTransactionController::class, 'showTransactionHistory']);
+Route::middleware(['auth:sanctum', 'permission:view total transactions'])
+   ->get('/trash-transaction-history', [TrashTransactionController::class, 'ViewTrashTransactionHitsory']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:view total transactions'])
+   ->get('/trash-transaction-total-today', [TrashTransactionController::class, 'TrashTransactionTotal']);
+Route::middleware(['auth:sanctum','verified', 'permission:view total weight'])
+   ->get('trash-weight-today', [TrashTransactionController::class, 'TotalWeightToday']);
+Route::middleware(['auth:sanctum','verified', 'permission:view total point input'])
+   ->get('point-input-today', [TrashTransactionController::class, 'TotalPointInput']);
 
-// UMKM Route
+   // UMKM Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:view all voucher'])
    ->get('/voucher', [VoucherController::class, 'index']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:view active voucher'])
    ->get('/active-voucher', [VoucherController::class, 'showActiveVoucher']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:view active voucher'])
+   ->get('/vouchers', [VoucherController::class, 'ActiveVoucher']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:view expired voucher'])
    ->get('/expired-voucher', [VoucherController::class, 'showExpiredVoucher']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:create voucher'])

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\trash_transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Container\Attributes\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -50,49 +51,48 @@ class TrashTransactionController extends Controller
         'Data' => $trashtransaction
     ]);
     }
-
-    public function showTotalTransactionToday(Request $request){
-        $this->authorize('view total transaction today');
+    // 'view total transactions',
+    // 'view total weight',
+    // 'view total point input',
+    public function ViewTrashTransactionHitsory(Request $request){
+        $this->authorize('view total transactions');
         $user = $request->user();
-        $transactionToday = trash_transaction::where('petugas_id', $user->id)
-            ->whereDate('created_at', today())
-            ->get()
-            ->sum();
+        $transaction = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->get();
         return response()->json([
-            'Total Transaction Today' => $transactionToday
-        ]);
+            'Trash_Transaction' => $transaction
+        ],200);
     }
 
-    public function showTotalTransaction(Request $request){
-        $this->authorize('view total transaction');
+    public function TrashTransactionTotal(Request $request){
+        $this->authorize('view total transactions');
         $user = $request->user();
-        $totalTransaction = trash_transaction::where('petugas_id', $user->id)
-            ->get()
-            ->count();
+        $transactionCount = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->count();
+
         return response()->json([
-            'Total Transaction' => $totalTransaction
-        ]);
+            'Today Total Transaction'=> $transactionCount
+        ],200);
     }
 
-    public function showTotalSentPoints(Request $request){
-        $this->authorize('view total sent points');
+    public function TotalWeightToday(Request $request){
+        $this->authorize('view total weight');
+
         $user = $request->user();
-        $totalSentPoints = trash_transaction::where('petugas_id', $user->id)
-            ->get()
-            ->sum();
+        $weightCount = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->sum('trash_weight');
+    
         return response()->json([
-            'Total Sent Points' => $totalSentPoints
-        ]);
+            'Today Total Trash Weighted'=> $weightCount
+        ],200);
+    }
+    public function TotalPointInput(Request $request){
+        $this->authorize('view total point input');
+
+        $user = $request->user();
+        $weightCount = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->sum('points');
+    
+        return response()->json([
+            'Today Total Point Inputted'=> $weightCount
+        ],200);
     }
 
-    public function showTransactionHistory(Request $request){
-        $this->authorize('view transaction history');
-        $user = $request->user();
-        $transactionHistory = trash_transaction::where('petugas_id', $user->id)
-            ->get()
-            ->paginate(10);
-        return response()->json([
-            'Transaction History' => $transactionHistory
-        ]);
-    }
+
 }
