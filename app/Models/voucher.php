@@ -19,6 +19,7 @@ class Voucher extends Model
         'umkm_id',
         'status',
         'limit',
+        'discount_price',
     ];
 
     public function user()
