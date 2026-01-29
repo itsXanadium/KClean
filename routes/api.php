@@ -95,6 +95,8 @@ Route::middleware(['auth:sanctum', 'verified', 'permission:view all voucher'])
    ->get('/voucher', [VoucherController::class, 'index']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:view active voucher'])
    ->get('/active-voucher', [VoucherController::class, 'showActiveVoucher']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:view active voucher'])
+   ->get('/vouchers', [VoucherController::class, 'ActiveVoucher']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:view expired voucher'])
    ->get('/expired-voucher', [VoucherController::class, 'showExpiredVoucher']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:create voucher'])
