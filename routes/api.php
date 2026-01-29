@@ -69,7 +69,8 @@ Route::middleware(['auth:sanctum', 'permission:view user voucher'])
 Route::get('/allvoucher', [UserVoucherController::class, 'FetchAllVoucher']);
 Route::middleware(['auth:sanctum'])
    ->get('/user-data', [ProfileController::class, 'fetchUserData']);
-   
+Route::middleware(['auth:sanctum'])
+   ->get('/user-points', [ProfileController::class, 'fetchUserPoint']);
    
 
 

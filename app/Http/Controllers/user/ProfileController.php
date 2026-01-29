@@ -76,4 +76,14 @@ class ProfileController extends Controller
             "Data"=> $userData
         ],200 );        
     }
+
+    public function fetchUserPoint(Request $request){
+        $user = $request->user();
+
+        $userPoints = User::where('id', $user->id)->get('points');
+
+        return response()->json([
+            "User_Points" => $userPoints
+        ],200);
+    }
 }
