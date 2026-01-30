@@ -30,19 +30,19 @@ class NotificationController extends Controller
             });
 
         // 2. Voucher Transactions (Spending/Using Points)
-        // Note: Ideally we get the voucher cost, but for now just showing redemption
-        $voucherTransactions = voucher_transaction::where('user_id', $user->id)
-            ->with('user_voucher.voucher') // Assuming relationships exist
+        $voucherTransactions = \App\Models\user_voucher::where('user_id', $user->id)
+            ->with('voucher')
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(function ($item) {
-                $voucherName = $item->user_voucher->voucher->name ?? 'Voucher';
+                $voucherName = $item->voucher->title ?? 'Voucher';
+                $points = $item->voucher->points_required ?? 0;
                 return [
                     'id' => 'voucher-' . $item->id,
                     'type' => 'voucher',
-                    'title' => 'Tukar Voucher',
+                    'title' => 'Tukar Poin',
                     'description' => $voucherName,
-                    'points' => 0, // We need to fetch cost from voucher if needed, usually negative
+                    'points' => $points,
                     'is_earning' => false,
                     'date' => $item->created_at,
                 ];
