@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Voucher;
+use App\Models\voucher_transaction;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -119,10 +120,27 @@ class VoucherController extends Controller
         ], 200);
     }
 
-    public function showTotalVoucherUsed()
+    public function showTotalVoucherUsed(Request $request)
     {
         $this->authorize('view total voucher used');
+        $user = $request->user();
+        $voucher = voucher_transaction::where('umkm_id', $user->id)
+            ->count('umkm_id', $user->id)
+            ->whereMonth('created_at', now()->month);
+        return response()->json([
+            'Vouchers' => $voucher
+        ]);
+    }
 
+    public function showVoucherHistory(Request $request){
+        $this->authorize('view voucher history');
+        $user = $request->user();
+        $voucher = voucher_transaction::where('umkm_id', $user->id)
+            ->whereMonth('created_at', now()->month)
+            ->get();
+        return response()->json([
+            'Voucher History' => $voucher
+        ]);
     }
 
     public function update(Request $request, $id)
