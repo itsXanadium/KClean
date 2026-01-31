@@ -91,11 +91,12 @@ class VoucherController extends Controller
         $user = $request->user();
         $voucher = Voucher::where('umkm_id', $user->id)
             ->where('status', 'active')
-            ->get();
+            ->count('limit');
         return response()->json([
             'Vouchers' => $voucher
         ], 200);
     }
+
     public function ActiveVoucher(Request $request)
     {
         $this->authorize('view active voucher');
