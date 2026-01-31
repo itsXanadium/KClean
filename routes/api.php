@@ -112,3 +112,7 @@ Route::middleware(['auth:sanctum', 'verified', 'permission:scan voucher'])
    ->post('/voucher-redemption/{uuid}', [VoucherTransactionController::class, 'VoucherTransaction']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:scan voucher'])
    ->get('/voucher-check/{uuid}', [VoucherTransactionController::class, 'checkVoucher']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:view total voucher used'])
+   ->get('/voucher-used', [VoucherController::class, 'showTotalVoucherUsed']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:view voucher history'])
+   ->get('/voucher-history', [VoucherController::class, 'showVoucherHistory']);
