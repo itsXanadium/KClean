@@ -17,8 +17,10 @@ use App\Models\trash_transaction;
 //     Route::post('/login', [AuthController::class, 'login']);
 // });
 
+//Note: Throttle act as Rate Limiter, [attempt,cooldown(in minutes)]
 // User Authentication
-Route::post('login', [AuthController::class, 'login']);
+Route::middleware('throttle:5,1')
+   ->post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logout']);
 Route::middleware(['auth:sanctum', 'throttle:6,1'])
@@ -94,7 +96,7 @@ Route::middleware(['auth:sanctum', 'verified', 'permission:view all voucher'])
    ->get('/voucher', [VoucherController::class, 'index']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:view active voucher'])
    ->get('/active-voucher', [VoucherController::class, 'showActiveVoucher']);
-Route::middleware(['auth:sanctum', 'verified', 'permission:view active voucher'])
+Route::middleware(['auth:sanctum', 'verified', 'permission:view active voucher', 'throttle:10,1'])
    ->get('/vouchers', [VoucherController::class, 'ActiveVoucher']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:view expired voucher'])
    ->get('/expired-voucher', [VoucherController::class, 'showExpiredVoucher']);
