@@ -19,8 +19,8 @@ class TrashTransactionSeeder extends Seeder
     public function run()
     {
         // Specific users as requested
-        $petugas = User::find(4); 
-        $customer = User::find(1);
+        $petugas = User::find(3); 
+        $customer = User::find(2);
         
         if (!$petugas || !$customer) {
             $this->command->error("User with ID 22 (Warga) or 23 (Petugas) not found. Please ensure they exist.");

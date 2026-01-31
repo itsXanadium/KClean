@@ -108,3 +108,5 @@ Route::middleware(['auth:sanctum', 'verified', 'permission:delete voucher'])
    ->delete('/voucher/{id}', [VoucherController::class, 'destroy']);
 Route::middleware(['auth:sanctum', 'verified', 'permission:scan voucher'])
    ->post('/voucher-redemption/{uuid}', [VoucherTransactionController::class, 'VoucherTransaction']);
+Route::middleware(['auth:sanctum', 'verified', 'permission:scan voucher'])
+   ->get('/voucher-check/{uuid}', [VoucherTransactionController::class, 'checkVoucher']);

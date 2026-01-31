@@ -33,7 +33,7 @@ class TrashTransactionController extends Controller
     ]);
         // $uuid = Str::uuid()->toString();
         $user = User::where('trash_transaction_qr', $uuid)->firstOrFail();
-        $points = round($validated['trash_weight']*0.2,2);
+        $points = round($validated['trash_weight']*10,2);
         $trashtransaction = FacadesDB::transaction(function() use($points, $user, $validated){
             $transaction = trash_transaction::create([
             'trash_transaction_id' => (string)Str::uuid(),

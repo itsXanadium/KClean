@@ -68,4 +68,28 @@ class VoucherTransactionController extends Controller
             "Data" => $transaction
         ]);
     }
+    public function checkVoucher($uuid)
+    {
+        $this->authorize('scan voucher');
+
+        $userVoucher = user_voucher::with(['voucher', 'user'])
+            ->where('voucher_qr', $uuid)
+            ->first();
+
+        if (!$userVoucher) {
+            return response()->json(['message' => 'Voucher tidak ditemukan'], 404);
+        }
+
+        if ($userVoucher->status !== 'active') {
+             return response()->json([
+                'message' => 'Voucher tidak valid (Kadaluarsa/Sudah Dipakai)',
+                'data' => $userVoucher
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => 'Voucher Valid',
+            'data' => $userVoucher
+        ]);
+    }
 }
