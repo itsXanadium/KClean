@@ -34,11 +34,18 @@ class VoucherTransactionController extends Controller
                 'status' => 'used',
                 'used_at'=>now(),
             ]);
+            
+            // Load relations to return consistent data for UI
+            $voucherTransaction->load('user_voucher.voucher');
+            
+            // Transform to include voucher_name for frontend convenience if needed
+            // Or relying on user_voucher.voucher.title
+            
             return $voucherTransaction;
         });
         return response()->json([
             "{+}" => "Voucher Redeemed",
-            "Data" => $transaction
+            "data" => $transaction // Changed to lowercase 'data' for consistency
         ]);
     }
     public function UserVoucherTransaction(Request $request){
