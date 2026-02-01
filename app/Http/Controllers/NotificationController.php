@@ -48,8 +48,31 @@ class NotificationController extends Controller
                 ];
             });
 
+        // 3. Voucher Usage (Redeemed at UMKM)
+        $usageTransactions = voucher_transaction::where('user_id', $user->id)
+            ->with(['user_voucher.voucher'])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($item) {
+                // Access nested relationship safely
+                $voucherName = $item->user_voucher->voucher->title ?? 'Voucher';
+                return [
+                    'id' => 'usage-' . $item->id,
+                    'type' => 'usage',
+                    'title' => 'Voucher Digunakan',
+                    'description' => $voucherName,
+                    'points' => 0,
+                    'is_earning' => false,
+                    'date' => $item->created_at,
+                ];
+            });
+
         // Merge and Sort
-        $history = $trashTransactions->concat($voucherTransactions)->sortByDesc('date')->values();
+        $history = $trashTransactions
+            ->concat($voucherTransactions)
+            ->concat($usageTransactions)
+            ->sortByDesc('date')
+            ->values();
 
         return response()->json([
             'status' => 'success',
