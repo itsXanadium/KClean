@@ -115,7 +115,6 @@ class VoucherController extends Controller
         $voucher = Voucher::where('umkm_id', $user->id)
             ->where('status', 'expired')
             ->sum('limit');
-            // ->count();
         return response()->json([
             'Vouchers' => $voucher
         ], 200);

@@ -29,9 +29,7 @@ class TrashTransactionController extends Controller
         $validated = $request->validate([
             'trash_type' => 'required',
             'trash_weight' => 'required',
-            // 'trash_transaction_qr'=>'required'
     ]);
-        // $uuid = Str::uuid()->toString();
         $user = User::where('trash_transaction_qr', $uuid)->firstOrFail();
         $points = round($validated['trash_weight']*10,2);
         $trashtransaction = FacadesDB::transaction(function() use($points, $user, $validated){
@@ -51,9 +49,7 @@ class TrashTransactionController extends Controller
         'Data' => $trashtransaction
     ]);
     }
-    // 'view total transactions',
-    // 'view total weight',
-    // 'view total point input',
+    
     public function ViewTrashTransactionHitsory(Request $request){
         $this->authorize('view total transactions');
         $user = $request->user();
