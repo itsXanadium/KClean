@@ -57,7 +57,7 @@ class TrashTransactionController extends Controller
     public function ViewTrashTransactionHitsory(Request $request){
         $this->authorize('view total transactions');
         $user = $request->user();
-        $transaction = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->get();
+        $transaction = trash_transaction::where('petugas_id', $user->id)->whereDate('created_at', Carbon::today())->latest()->get();
         return response()->json([
             'Trash_Transaction' => $transaction
         ],200);

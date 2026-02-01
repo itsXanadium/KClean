@@ -89,7 +89,7 @@ class VoucherTransactionController extends Controller
 
         if ($userVoucher->status !== 'active') {
              return response()->json([
-                'message' => 'Voucher tidak valid (Kadaluarsa/Sudah Dipakai)',
+                'message' => 'Voucher sudah pernah digunakan',
                 'data' => $userVoucher
             ], 400);
         }
