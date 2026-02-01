@@ -10,7 +10,8 @@ class voucher_transaction extends Model
     'umkm_id',
     'user_voucher_id',
     'redeemed_at',
-    'user_id'
+    'user_id',
+    'created_at'
   ];
 
   public function user_voucher(){
