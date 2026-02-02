@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'adafruit' => [
+        'username' => env('ADAFRUIT_USERNAME'),
+        'key' => env('ADAFRUIT_IO_KEY'),
+        'feed' => env('ADAFRUIT_FEED'),
+    ],
 ];

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Str;
+use App\Services\AdafruitService;
 
 class TrashTransactionController extends Controller
 {
@@ -26,28 +27,46 @@ class TrashTransactionController extends Controller
 
     public function TrashTransaction(Request $request, $uuid){
         $this->authorize('create trash transactions');
+
         $validated = $request->validate([
             'trash_type' => 'required',
-            'trash_weight' => 'required',
-    ]);
-        $user = User::where('trash_transaction_qr', $uuid)->firstOrFail();
-        $points = round($validated['trash_weight']*10,2);
-        $trashtransaction = FacadesDB::transaction(function() use($points, $user, $validated){
-            $transaction = trash_transaction::create([
-            'trash_transaction_id' => (string)Str::uuid(),
-            'trash_type' => $validated['trash_type'],
-            'trash_weight'=> $validated['trash_weight'],
-            'points' => $points,
-            'user_id'=> $user->id,
-            'petugas_id' => Auth::user()->id,
         ]);
-        $user->increment('points', $points);
-        return $transaction;
+
+        $user = User::where('trash_transaction_qr', $uuid)->firstOrFail();
+        $adafruit = AdafruitService::latest();
+        $weight = $adafruit['value'];
+        $timestamp = $adafruit['timestamp'];
+
+        if ($weight <= 0) {
+            return response()->json([
+                'message' => 'Berat tidak valid, silakan timbang ulang'
+            ], 422);
+        }
+
+        if (now()->diffInSeconds($timestamp) > 10) {
+            return response()->json([
+                'message' => 'Data timbangan sudah tidak fresh'
+            ], 422);
+        }
+
+        $points = round($validated['trash_weight']*10,2);
+
+        $trashtransaction = FacadesDB::transaction(function() use($points, $user, $validated, $weight){
+            $transaction = trash_transaction::create([
+                'trash_transaction_id' => (string)Str::uuid(),
+                'trash_type' => $validated['trash_type'],
+                'trash_weight'=> $weight,
+                'points' => $points,
+                'user_id'=> $user->id,
+                'petugas_id' => Auth::user()->id,
+            ]);
+            $user->increment('points', $points);
+            return $transaction;
         });
-    return response()->json([
-        '{+}' => 'Transaction Success',
-        'Data' => $trashtransaction
-    ]);
+        return response()->json([
+            '{+}' => 'Transaction Success',
+            'Data' => $trashtransaction
+        ]);
     }
     
     public function ViewTrashTransactionHitsory(Request $request){
