@@ -38,7 +38,7 @@ class UserManagementController extends Controller
             'profile_qr' => $uuid,
             'email_verified_at' => now(),
         ]);
-        // $user->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
         //Store qr  
         $qrPath = "qrcodes/users/{$uuid}.svg";
         Storage::disk('public')->put(
