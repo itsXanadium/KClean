@@ -13,12 +13,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class VoucherTransactionController extends Controller
 {
     use AuthorizesRequests;
-    public function VoucherTransaction(Request $request, $uuid){
+    public function VoucherTransaction($uuid){
         $this->authorize('scan voucher');
-        // $validated=$request->validate([
-        //     'voucher_qr' => 'required'
-        // ]);
-
         $userVoucher = user_voucher::lockForUpdate()->where('voucher_qr', $uuid)->firstOrFail();
         $transaction = DB::transaction(function() use($userVoucher){
             if($userVoucher->status !=='active'){
@@ -34,18 +30,12 @@ class VoucherTransactionController extends Controller
                 'status' => 'used',
                 'used_at'=>now(),
             ]);
-            
-            // Load relations to return consistent data for UI
             $voucherTransaction->load('user_voucher.voucher');
-            
-            // Transform to include voucher_name for frontend convenience if needed
-            // Or relying on user_voucher.voucher.title
-            
             return $voucherTransaction;
         });
         return response()->json([
             "{+}" => "Voucher Redeemed",
-            "data" => $transaction // Changed to lowercase 'data' for consistency
+            "data" => $transaction 
         ]);
     }
     public function UserVoucherTransaction(Request $request){

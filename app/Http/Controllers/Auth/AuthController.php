@@ -22,7 +22,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'max:255', 'unique:users'],
-            'no_kk' => ['required'],
+            'no_kk' => ['required', 'min:18', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:10'],
         ]);
         $uuid = Str::uuid()->toString();
