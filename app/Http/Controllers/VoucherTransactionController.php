@@ -13,9 +13,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class VoucherTransactionController extends Controller
 {
     use AuthorizesRequests;
-    public function VoucherTransaction($uuid){
+    public function VoucherTransaction(Request $request, $uuid){
         $this->authorize('scan voucher');
         $userVoucher = user_voucher::lockForUpdate()->where('voucher_qr', $uuid)->firstOrFail();
+        $umkm = $request->user();
+        if($umkm->id !== $userVoucher->umkm_id){
+            abort(403, 'This is not your voucher');
+        }
         $transaction = DB::transaction(function() use($userVoucher){
             if($userVoucher->status !=='active'){
                 abort(400, 'The Voucher is no longer useable (Expired/Used)');

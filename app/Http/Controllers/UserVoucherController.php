@@ -49,7 +49,8 @@ class UserVoucherController extends Controller
                 'expired_at' => $voucher->expired_at,
                 'status' => 'active',
                 'voucher_qr' => $uuid,
-                'user_voucher_qr_path' => $voucher_qr_path
+                'user_voucher_qr_path' => $voucher_qr_path,
+                'umkm_id' => $voucher->umkm_id,
             ]);
             });
             return response()->json([
