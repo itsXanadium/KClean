@@ -38,6 +38,7 @@ class VoucherController extends Controller
             'expired_at' => 'required',
             'limit' => 'required',
             'discount_price' => 'required',
+            'umkm_address' => 'required',
         ]);
 
         //upload image
@@ -55,7 +56,8 @@ class VoucherController extends Controller
             'expired_at' => $request->expired_at,
             'umkm_id' => Auth::user()->id,
             'limit' => $request->limit,
-            'discount_price' => $request->discount_price
+            'discount_price' => $request->discount_price,
+            'umkm_address' => $request->umkm_address,
         ]);
 
         if ($voucher) {
