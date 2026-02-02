@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class VoucherTransactionController extends Controller
 {
     use AuthorizesRequests;
-    public function VoucherTransaction($uuid){
+    public function VoucherTransaction(Request $request, $uuid){
         $this->authorize('scan voucher');
         $userVoucher = user_voucher::lockForUpdate()->where('voucher_qr', $uuid)->firstOrFail();
         $umkm = $request->user();
