@@ -126,9 +126,9 @@ class VoucherController extends Controller
     {
         $this->authorize('view total voucher used');
         $user = $request->user();
-        $voucher = voucher_transaction::where('umkm_id', $user->id)
-            ->count('umkm_id', $user->id)
-            ->whereMonth('created_at', now()->month);
+         $voucher = voucher_transaction::where('umkm_id', $user->id)
+            ->whereMonth('created_at', now()->month)
+            ->count();
         return response()->json([
             'Vouchers' => $voucher
         ]);
