@@ -66,8 +66,9 @@ Route::middleware(['auth:sanctum', 'verified', 'permission:generate trash transa
 //Voucher Route
 Route::middleware(['auth:sanctum', 'verified', 'permission:buy voucher'])
    ->post('/voucher-purchase/{id}', [UserVoucherController::class, 'BuyVoucher']);
-Route::middleware(['auth:sanctum', 'permission:use voucher'])
-   ->post('/use-voucher', [VoucherTransactionController::class, 'UserVoucherTransaction']);
+// Unused
+// Route::middleware(['auth:sanctum', 'permission:use voucher'])
+//    ->post('/use-voucher', [VoucherTransactionController::class, 'UserVoucherTransaction']);
 //Fetching Data
 Route::middleware(['auth:sanctum', 'permission:view user voucher'])
    ->get('/user-voucher', [UserVoucherController::class, 'FetchActiveVoucher']);

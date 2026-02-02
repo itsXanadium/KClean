@@ -42,33 +42,34 @@ class VoucherTransactionController extends Controller
             "data" => $transaction 
         ]);
     }
-    public function UserVoucherTransaction(Request $request){
-        $this->authorize('use voucher');
-        $validated=$request->validate([
-            'voucher_qr' => 'required'
-        ]);
-        $transaction = DB::transaction(function() use($validated){
-            $userVoucher = user_voucher::lockForUpdate()->where('voucher_qr', $validated['voucher_qr'])->firstOrFail();
-            if($userVoucher->status !=='active'){
-                abort(400, 'The Voucher is no longer useable (Expired/Used)');
-            }
-            $voucherTransaction = voucher_transaction::create([
-                "umkm_id"  => $userVoucher->voucher->umkm_id,
-                "user_id" => Auth::user()->id,
-                'user_voucher_id' => $userVoucher->id,
-                'redeemed_at' => now()
-            ]);
-            $userVoucher->update([
-                'status' => 'used',
-                'used_at'=>now(),
-            ]);
-            return $voucherTransaction;
-        });
-        return response()->json([
-            "{+}" => "Voucher Redeemed",
-            "Data" => $transaction
-        ]);
-    }
+    // Unused
+    // public function UserVoucherTransaction(Request $request){
+    //     $this->authorize('use voucher');
+    //     $validated=$request->validate([
+    //         'voucher_qr' => 'required'
+    //     ]);
+    //     $transaction = DB::transaction(function() use($validated){
+    //         $userVoucher = user_voucher::lockForUpdate()->where('voucher_qr', $validated['voucher_qr'])->firstOrFail();
+    //         if($userVoucher->status !=='active'){
+    //             abort(400, 'The Voucher is no longer useable (Expired/Used)');
+    //         }
+    //         $voucherTransaction = voucher_transaction::create([
+    //             "umkm_id"  => $userVoucher->voucher->umkm_id,
+    //             "user_id" => Auth::user()->id,
+    //             'user_voucher_id' => $userVoucher->id,
+    //             'redeemed_at' => now()
+    //         ]);
+    //         $userVoucher->update([
+    //             'status' => 'used',
+    //             'used_at'=>now(),
+    //         ]);
+    //         return $voucherTransaction;
+    //     });
+    //     return response()->json([
+    //         "{+}" => "Voucher Redeemed",
+    //         "Data" => $transaction
+    //     ]);
+    // }
     public function checkVoucher($uuid)
     {
         $this->authorize('scan voucher');
