@@ -16,13 +16,10 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class UserVoucherController extends Controller
 {
     use AuthorizesRequests;
-    public function BuyVoucher(Request $request){
+    public function BuyVoucher(Request $request, $id){
         $this->authorize('buy voucher');
-        $validated = $request->validate([
-            'voucher_id' => 'required|exists:vouchers,id',
-        ]);
-        $purchase = DB::transaction(function()use($validated){
-            $voucher = Voucher::lockForUpdate()->findOrFail($validated['voucher_id']);
+        $purchase = DB::transaction(function()use($id){
+            $voucher = Voucher::lockForUpdate()->findOrFail($id);
             $uuid = Str::uuid()->toString();
             $user= User::lockForUpdate()->findOrFail(Auth::id());
             if($user->points < $voucher->points_required){
@@ -31,8 +28,12 @@ class UserVoucherController extends Controller
             if($voucher->status !=='active'){
                 abort(400, "The voucher is no longer purchasable");
             }
+            if($voucher->limit === 0){
+                abort(400, "Voucher Sold out");
+            }
             $user->decrement('points', $voucher->points_required);
-             $voucher_qr_path = "voucher_qr/users/{$uuid}.svg";
+            $voucher->decrement('limit');
+            $voucher_qr_path = "voucher_qr/users/{$uuid}.svg";
             Storage::disk('public')->put(
                 $voucher_qr_path,
                 QrCode::format('svg')
@@ -48,7 +49,8 @@ class UserVoucherController extends Controller
                 'expired_at' => $voucher->expired_at,
                 'status' => 'active',
                 'voucher_qr' => $uuid,
-                'user_voucher_qr_path' => $voucher_qr_path
+                'user_voucher_qr_path' => $voucher_qr_path,
+                'umkm_id' => $voucher->umkm_id,
             ]);
             });
             return response()->json([

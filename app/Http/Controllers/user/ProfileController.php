@@ -38,10 +38,15 @@ class ProfileController extends Controller
     }
 
     public function UserProfileQRScan($uuid){
-        $user = User::where('profile_qr', $uuid)->firstOrFail();
+        $user = User::where('profile_qr', $uuid)
+                    ->orWhere('trash_transaction_qr', $uuid)
+                    ->firstOrFail();
+        
         return response()->json([
+            'id' => $user->id, // Added ID for frontend display
             'name'=>$user->name,
             'email'=> $user->email,
+            'avatar'=> $user->avatar, // Returning avatar for the UI
         ]);
     }
     public function GenerateTrashTransactionQR(Request $request){
@@ -75,5 +80,15 @@ class ProfileController extends Controller
         return response()->json([
             "Data"=> $userData
         ],200 );        
+    }
+
+    public function fetchUserPoint(Request $request){
+        $user = $request->user();
+
+        $userPoints = User::where('id', $user->id)->get('points');
+
+        return response()->json([
+            "User_Points" => $userPoints
+        ],200);
     }
 }

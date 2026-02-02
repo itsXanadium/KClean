@@ -14,7 +14,8 @@ class user_voucher extends Model
         'actives_at',
         'expired_at',
         'voucher_qr',
-        'user_voucher_qr_path'
+        'user_voucher_qr_path',
+        'umkm_id',
     ];
     public function user(){
         return $this->belongsTo(User::class);
