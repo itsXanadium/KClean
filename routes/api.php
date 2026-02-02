@@ -12,6 +12,7 @@ use App\Http\Controllers\UserVoucherController;
 use App\Http\Controllers\VoucherTransactionController;
 use App\Http\Controllers\NotificationController;
 use App\Models\trash_transaction;
+use App\Http\Controllers\WeightController;
 
 // Route::prefix('auth')->group(function(){
 //     Route::post('/login', [AuthController::class, 'login']);
@@ -73,7 +74,8 @@ Route::middleware(['auth:sanctum'])
 Route::middleware(['auth:sanctum'])
    ->get('/user-points', [ProfileController::class, 'fetchUserPoint']);
 
-
+Route::get('/weight/latest', [WeightController::class, 'latest']);
+Route::get('/weight/history', [WeightController::class, 'history']);
 
 Route::middleware('auth:sanctum')
    ->get('/notifications', [NotificationController::class, 'index']);

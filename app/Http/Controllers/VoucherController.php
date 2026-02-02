@@ -139,6 +139,7 @@ class VoucherController extends Controller
         $user = $request->user();
         $voucher = voucher_transaction::where('umkm_id', $user->id)
             ->whereMonth('created_at', now()->month)
+            ->with(['user_voucher.voucher'])
             ->get();
         return response()->json([
             'Voucher History' => $voucher

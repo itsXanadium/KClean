@@ -13,12 +13,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class VoucherTransactionController extends Controller
 {
     use AuthorizesRequests;
-    public function VoucherTransaction(Request $request, $uuid){
+    public function VoucherTransaction($uuid){
         $this->authorize('scan voucher');
-        // $validated=$request->validate([
-        //     'voucher_qr' => 'required'
-        // ]);
-
         $userVoucher = user_voucher::lockForUpdate()->where('voucher_qr', $uuid)->firstOrFail();
         $umkm = $request->user();
         if($umkm->id !== $userVoucher->umkm_id){
@@ -38,11 +34,12 @@ class VoucherTransactionController extends Controller
                 'status' => 'used',
                 'used_at'=>now(),
             ]);
+            $voucherTransaction->load('user_voucher.voucher');
             return $voucherTransaction;
         });
         return response()->json([
             "{+}" => "Voucher Redeemed",
-            "Data" => $transaction
+            "data" => $transaction 
         ]);
     }
     public function UserVoucherTransaction(Request $request){
@@ -86,7 +83,7 @@ class VoucherTransactionController extends Controller
 
         if ($userVoucher->status !== 'active') {
              return response()->json([
-                'message' => 'Voucher tidak valid (Kadaluarsa/Sudah Dipakai)',
+                'message' => 'Voucher sudah pernah digunakan',
                 'data' => $userVoucher
             ], 400);
         }

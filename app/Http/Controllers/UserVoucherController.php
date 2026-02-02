@@ -18,10 +18,6 @@ class UserVoucherController extends Controller
     use AuthorizesRequests;
     public function BuyVoucher(Request $request, $id){
         $this->authorize('buy voucher');
-        // $validated = $request->validate([
-        //     'voucher_id' => 'required|exists:vouchers,id',
-        // ]);
-        // $id = Voucher::findOrFail($id);
         $purchase = DB::transaction(function()use($id){
             $voucher = Voucher::lockForUpdate()->findOrFail($id);
             $uuid = Str::uuid()->toString();
