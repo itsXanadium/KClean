@@ -49,7 +49,7 @@ class TrashTransactionController extends Controller
             ], 422);
         }
 
-        $points = round($validated['trash_weight']*10,2);
+        $points = round($weight*50,2);
 
         $trashtransaction = FacadesDB::transaction(function() use($points, $user, $validated, $weight){
             $transaction = trash_transaction::create([
