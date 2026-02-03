@@ -82,6 +82,10 @@ class VoucherTransactionController extends Controller
             return response()->json(['message' => 'Voucher tidak ditemukan'], 404);
         }
 
+        if (Auth::user()->id !== $userVoucher->umkm_id) {
+            return response()->json(['message' => 'Voucher ini bukan milik anda'], 403);
+        }
+
         if ($userVoucher->status !== 'active') {
              return response()->json([
                 'message' => 'Voucher sudah pernah digunakan',
